@@ -16,6 +16,8 @@ public class Homepage extends AppCompatActivity {
         int a = 0;
     }
 
+    // Oh hey, it's a comment, this means that something changed!
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
