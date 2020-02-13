@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Homepage extends AppCompatActivity {
 
-    // Overriding the back button function so that you can't return "back" to the login or registration screens
+    // Disabling the back button
     @Override
     public void onBackPressed() {
         int a = 0;
@@ -21,6 +21,13 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final UserStorage userStorage = new UserStorage(this);
+
+        // User loggedInUser = UserStorage.getLoggedInUser();
+        // TextView isLoggedIn = (TextView) findViewById(R.id.loggedInTextView);
+
+        // String loggedIn = "Logged In: " + loggedInUser.username;
+        // isLoggedIn.setText(loggedIn);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Coming Soon...");
@@ -30,7 +37,11 @@ public class Homepage extends AppCompatActivity {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Homepage.this, MainActivity.class));
+
+                // Logging user out
+                userStorage.clearUserData();
+                userStorage.setLoggedInUser(false);
+                startActivity(new Intent(Homepage.this, SplashActivity.class));
             }
         });
     }

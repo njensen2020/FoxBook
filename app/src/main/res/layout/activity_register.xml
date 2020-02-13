@@ -10,20 +10,18 @@
         android:id="@+id/passwordEditText"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="64dp"
         android:ems="10"
         android:hint="Password (at least 8 characters)"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
 
     <EditText
         android:id="@+id/usernameEditText"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="256dp"
+        android:layout_marginBottom="320dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
@@ -36,7 +34,7 @@
         android:id="@+id/createAccountButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="256dp"
         android:text="Create Account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,5 +51,59 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/firstNameEditText"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="First Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/lastNameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/lastNameEditText"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/usernameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/pinEditText"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="PIN"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your name, username, and password."
+        app:layout_constraintBottom_toTopOf="@+id/firstNameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/pinTextView"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="Enter a six-digit PIN. This will be used if you need to reset your password."
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/pinEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

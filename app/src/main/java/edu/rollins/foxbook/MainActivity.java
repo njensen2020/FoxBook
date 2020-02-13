@@ -17,18 +17,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final UserStorage userStorage = new UserStorage(this);
 
         // Setting title of action bar
-        getSupportActionBar().setTitle("Welcome to FoxBook");
-
-        // Setting registration button to link to registration activity
-        Button registerButton = (Button) findViewById(R.id.registerButton);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
-        });
+        getSupportActionBar().setTitle("Sign In");
 
         // Setting login button to test for hardcoded password, actual password implementation coming soon
         Button loginButton = (Button) findViewById(R.id.loginButton);
@@ -37,16 +29,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // Logging user in
                 String username = ((EditText)findViewById(R.id.usernameEditText)).getText().toString();
                 String password = ((EditText)findViewById(R.id.passwordEditText)).getText().toString();
 
-                if ((username.equals("admin"))&&(password.equals("TarNation"))) {
-                    startActivity(new Intent(MainActivity.this, Homepage.class));
+                // Password too short
+                if(password.length() <= 7) {
+                    String err = "ERROR: Invalid login credentials";
+                    errText.setText(err);
                 }
 
+                // Logging user in, temporary until persistent storage is added
                 else {
-                    String err = "ERROR: Invalid Username/Password";
-                    errText.setText(err);
+                    User user = new User(username, password);
+                    userStorage.storeUserData(user);
+                    userStorage.setLoggedInUser(true);
+                    startActivity(new Intent(MainActivity.this, Homepage.class));
                 }
             }
         });

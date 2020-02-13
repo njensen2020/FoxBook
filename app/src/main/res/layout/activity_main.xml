@@ -18,11 +18,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/forgotPasswordButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
         android:layout_marginTop="384dp"
-        android:text="Register"
+        android:text="RESET"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,11 +66,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/forgotPasswordTextView"
         android:layout_width="256dp"
         android:layout_height="24dp"
         android:layout_marginTop="256dp"
-        android:text="Don't have an account?"
+        android:text="Forgot your password?"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
