@@ -30,6 +30,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/calendarButton"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="584dp"
+        android:text="Go to Calendar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/loggedInTextView"
         android:layout_width="wrap_content"

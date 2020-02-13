@@ -44,5 +44,12 @@ public class Homepage extends AppCompatActivity {
                 startActivity(new Intent(Homepage.this, SplashActivity.class));
             }
         });
+
+        Button calendarButton = (Button) findViewById(R.id.calendarButton);
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Overridepublic void onClick(View v) {
+                startActivity(new Intent( Homepage.this, CalendarActivity.class))
+            }
+        });
     }
 }
