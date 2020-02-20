@@ -57,7 +57,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
 
     public Cursor getDateSpecificData(String date) {                //queries database and returns all information on events from a specific day, ordered by time of day
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COL_1 + " like " + date + " order by " + COL_2, null);
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COL_1 + " like '" + date + "' order by " + COL_2, null);
         return res;
     }
 }
