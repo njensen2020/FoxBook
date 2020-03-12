@@ -16,6 +16,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
     public static final String COL_5 = "LOCATION";
     public static final String COL_6 = "DESCRIPTION";
     public static final String COL_7 = "ID";
+    public static final String COL_8 = "FILTER";
 
     public EventDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -23,7 +24,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {                       //creates database with given table
-        db.execSQL("create table " + TABLE_NAME + " ("+ COL_1 + " TEXT, " + COL_2 + " TEXT, " + COL_3 + " TEXT, " + COL_4 + " TEXT, " + COL_5 + " TEXT, " + COL_6 + " TEXT, " + COL_7 + " INTEGER PRIMARY KEY AUTOINCREMENT)");
+        db.execSQL("create table " + TABLE_NAME + " ("+ COL_1 + " TEXT, " + COL_2 + " TEXT, " + COL_3 + " TEXT, " + COL_4 + " TEXT, " + COL_5 + " TEXT, " + COL_6 + " TEXT, " + COL_7 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_8 + " TEXT)");
     }
 
     @Override
@@ -32,7 +33,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String date, String time, String title, String location, String description) {        //inserts new event into database
+    public boolean insertData(String date, String time, String title, String location, String description, String filter) {        //inserts new event into database
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1, date);
@@ -41,12 +42,32 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         contentValues.put(COL_4, title);
         contentValues.put(COL_5, location);
         contentValues.put(COL_6, description);
+        contentValues.put(COL_8, filter);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1) {                                          //returns true or false to tell if insertion was successful or not
             return false;
         } else {
             return true;
         }
+    }
+
+    public boolean updateData(int id, String date, String time, String title, String location, String description, String filter) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        //SQLiteDatabase db = this.getReadableDatabase(); <-- should it be readable????
+
+        //need to get id attribute in order to properly update!!!!!
+            //this is potentially passed /With/ the event upon selection <- just a matter of getting it in the method
+
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_1 + " = \'" + date + "\' WHERE " + COL_7 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_2 + " = \'" + time + "\' WHERE " + COL_7 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_4 + " = \'" + title + "\' WHERE " + COL_7 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_5 + " = \'" + location + "\' WHERE " + COL_7 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_6 + " = \'" + description + "\' WHERE " + COL_7 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_8 + " = \'" + filter + "\' WHERE " + COL_7 + " = \'" + id + "\'");
+
+        //db.execSQL("UPDATE "+CONTACTS_TABLE_NAME+" SET name = "+"'"+s+"' "+ "WHERE salary = "+"'"+s1+"'");
+
+        return true;
     }
 
     public Cursor getAllData() {                                    //queries database and returns everything

@@ -7,56 +7,69 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    UserStorage userStorage;
+    DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        final Button createAccountButton = (Button) findViewById(R.id.createAccountButton);
+        final EditText firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
+        final EditText lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
+        final EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
+        final EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        final EditText pinEditText = (EditText) findViewById(R.id.pinEditText);
+        final TextView errText = (TextView) findViewById(R.id.errorTextView);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        userStorage = new UserStorage(this);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Create an Account");
 
-        // Setting registration button to link to registration activity
-        Button createAccountButton = (Button) findViewById(R.id.createAccountButton);
-        final TextView errText = (TextView) findViewById(R.id.errorTextView);
-
-        createAccountButton.setOnClickListener(new View.OnClickListener(){
-            @Override
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String firstName = ((EditText)findViewById(R.id.firstNameEditText)).getText().toString();
-                String lastName = ((EditText)findViewById(R.id.lastNameEditText)).getText().toString();
-                String name = firstName + lastName;
+                String newFirst = firstNameEditText.getText().toString();
+                String newLast = lastNameEditText.getText().toString();
+                String newUsername = usernameEditText.getText().toString();
+                String newPassword = passwordEditText.getText().toString();
+                String newPIN = pinEditText.getText().toString();
 
-                String username = ((EditText)findViewById(R.id.usernameEditText)).getText().toString();
-                String password = ((EditText)findViewById(R.id.passwordEditText)).getText().toString();
-                String pinNum = ((EditText)findViewById(R.id.pinEditText)).getText().toString();
-
-                if (password.length() < 7) {
-                    String err = "ERROR: Password Too Short";
-                    errText.setText(err);
-                }
-                else if (pinNum.length() != 6) {
-                     String err = "ERROR: Incorrect PIN length";
-                     errText.setText(err);
+                if (newPassword.length() >= 7) {
+                    if (newPIN.length() == 6) {
+                        addData(newFirst, newLast, newUsername, newPassword, newPIN);
+                        startActivity(new Intent(RegisterActivity.this, Homepage.class));
+                    }
+                    else{
+                        String pinError = "ERROR: Incorrect PIN Length";
+                        errText.setText(pinError);
+                    }
                 }
                 else {
-
-                    // Logging in user
-                    User newRegister = new User(name, username, password, pinNum);
-                    UserStorage.storeUserData(newRegister);
-                    UserStorage.setLoggedInUser(true);
-
-                    startActivity(new Intent(RegisterActivity.this, Homepage.class));
+                    String passwordError = "ERROR: Incorrect Password Length";
+                    errText.setText(passwordError);
                 }
             }
         });
+    }
+
+    public void addData(String first, String last, String username, String password, String pin) {
+        boolean insertData = databaseHelper.addData(first, last, username, password, pin);
+
+        if (insertData) {
+            toastMessage("New user registered!");
+        }
+        else {
+            toastMessage("Registration failed.");
+        }
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

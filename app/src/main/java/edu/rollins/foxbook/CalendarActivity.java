@@ -9,6 +9,7 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 public class CalendarActivity extends AppCompatActivity{
+    //add line to lock orientation
     private static final String TAG = "CalendarActivity";
 
     EventDatabaseHelper myDB;

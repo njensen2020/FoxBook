@@ -38,12 +38,13 @@ public class EventSelection extends AppCompatActivity {
         //on click listener for selecting events
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
            @Override
-           public void onItemClick(AdapterView<?> adapter, View v, int position, long l) {
-               //figure out what long is for and what ItemClicked should be (Event obj?)
-               Event item = (Event) adapter.getItemAtPosition(position);
+           public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+               //figure out what ItemClicked should be (Event obj? <- there is not Event obj so no . . . String??? will this give funky address?)
+               //~god i wish i could check my code . . . .
+               String item = (String) adapter.getItemAtPosition(position);
 
                Intent intent = new Intent(EventSelection.this, Event.class);
-               //based on item add into to intent????
+               intent.putExtra("event", item);
                startActivity(intent);
            }
         });

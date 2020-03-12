@@ -21,16 +21,33 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        final UserStorage userStorage = new UserStorage(this);
-
-        // User loggedInUser = UserStorage.getLoggedInUser();
-        // TextView isLoggedIn = (TextView) findViewById(R.id.loggedInTextView);
-
-        // String loggedIn = "Logged In: " + loggedInUser.username;
-        // isLoggedIn.setText(loggedIn);
 
         // Setting title of action bar
-        getSupportActionBar().setTitle("Coming Soon...");
+        getSupportActionBar().setTitle("Home");
+
+        Button addEventButton = (Button) findViewById(R.id.addEventButton);
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homepage.this, Event.class));
+            }
+        });
+
+        Button calendarButton = (Button) findViewById(R.id.calendarButton);
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homepage.this, CalendarActivity.class));
+            }
+        });
+
+        // Button to take the user to account credentials page
+        Button viewAccountButton = (Button) findViewById(R.id.viewAccountButton);
+        viewAccountButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                // Taking user to new activity
+                startActivity(new Intent(Homepage.this, AccountListActivity.class));
+            }
+        });
 
         // Setting log out button to direct back to the main activity
         Button logOutButton = (Button) findViewById(R.id.logOutButton);
@@ -39,16 +56,7 @@ public class Homepage extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Logging user out
-                userStorage.clearUserData();
-                userStorage.setLoggedInUser(false);
                 startActivity(new Intent(Homepage.this, SplashActivity.class));
-            }
-        });
-
-        Button calendarButton = (Button) findViewById(R.id.calendarButton);
-        calendarButton.setOnClickListener(new View.OnClickListener() {
-            @Overridepublic void onClick(View v) {
-                startActivity(new Intent( Homepage.this, CalendarActivity.class))
             }
         });
     }

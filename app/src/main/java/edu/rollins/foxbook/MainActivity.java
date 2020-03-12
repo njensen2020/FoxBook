@@ -10,21 +10,31 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// Hello! This is a GitHub commit test!
+
 public class MainActivity extends AppCompatActivity {
+
+    DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        final UserStorage userStorage = new UserStorage(this);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Sign In");
 
-        // Setting login button to test for hardcoded password, actual password implementation coming soon
         Button loginButton = (Button) findViewById(R.id.loginButton);
+        Button resetPasswordButton = (Button) findViewById(R.id.forgotPasswordButton);
         final TextView errText = (TextView) findViewById(R.id.errorTextView);
+
+        resetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ForgotPassword.class));
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,10 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
                 // Logging user in, temporary until persistent storage is added
                 else {
-                    User user = new User(username, password);
-                    userStorage.storeUserData(user);
-                    userStorage.setLoggedInUser(true);
-                    startActivity(new Intent(MainActivity.this, Homepage.class));
+                    Boolean userExists = databaseHelper.checkLogin(username, password);
+
+                    if(!userExists) {
+                        String err = "ERROR: Invalid login credentials";
+                        errText.setText(err);
+                    }
+                    else {
+                        startActivity(new Intent(MainActivity.this, Homepage.class));
+                    }
                 }
             }
         });

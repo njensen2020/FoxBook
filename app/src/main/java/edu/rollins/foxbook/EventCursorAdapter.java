@@ -35,9 +35,9 @@ public class EventCursorAdapter extends CursorAdapter {
             tvPriority.setText(String.valueOf(priority));
         }
 
-        @Override
-        public Event getItem(int position) {
+        //@Override
+        //public Event getItem(int position) {
             //what should items be??
-            return items.get(position);
-    }
+           //return items.get(position);
+        //}
 }
