@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FoxBook</string>
+    <string-array name="options">
+        <item>Sports</item>
+        <item>Arts</item>
+        <item>STEM</item>
+        <item>Entertainment</item>
+        <item>Greek</item>
+        <item>Community</item>
+    </string-array>
 </resources>
