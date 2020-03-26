@@ -12,6 +12,12 @@
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".Homepage" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".AccountListActivity" />
+        <activity android:name=".Event" />
+        <activity android:name=".Club" />
+        <activity android:name=".EventSelection" />
+        <activity android:name=".ForgotPassword" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
