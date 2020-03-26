@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,9 +33,10 @@ public class Event extends AppCompatActivity {
         createButton = (Button)findViewById(R.id.createButton);
         editButton = (Button)findViewById(R.id.editButton);
         chooseFilter = (Spinner)findViewById(R.id.chooseFilter);
-        String[] options = new String[]{"Sports", "Arts", "STEM", "Entertainment", "Greek", "Community"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_event, options);
-        chooseFilter.setAdapter(adapter);
+        //String[] options = new String[]{"Sports", "Arts", "STEM", "Entertainment", "Greek", "Community"};
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_event, options);
+        //adapter.setDropDownViewResource(R.layout.activity_event);
+        //chooseFilter.setAdapter(adapter);
 
         chooseFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -56,14 +56,7 @@ public class Event extends AppCompatActivity {
             //now to parse . . . but how????
             //editDescription.setText(savedExtra, TextView.BufferType.EDITABLE);
             editDescription.setText(savedExtra);
-            id = 0; //<--- figure out how to put id attribute into this variable!!!!!!!!!!
-
-            //NOTE TO FUTURE CAITLIN
-                //when using Michael's phone, you'll most likely have to set it up as an authorized device
-                //to do this, go to Computer Management, then find the phone in Device Manager
-                //right click to Update Driver Software (browse for USB driver folder whatever that means)
-                //then install!
-                //hopefully this will go smoothly and work perfectly! but i've just now probably jinxed it so . . .
+            id = 0; //<--- figure out how to put id attribute into this variable!!!!!!!!!
 
         } else {
             savedExtra = "";

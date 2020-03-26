@@ -11,11 +11,11 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "event_table";
     public static final String COL_1 = "DATE";
     public static final String COL_2 = "TIME";
-    public static final String COL_3 = "CLUB";
+    public static final String COL_3 = "CLUB";              //this will be club name & it's the primary key of the club database table
     public static final String COL_4 = "TITLE";
     public static final String COL_5 = "LOCATION";
     public static final String COL_6 = "DESCRIPTION";
-    public static final String COL_7 = "ID";
+    public static final String COL_7 = "ID";                //primary key
     public static final String COL_8 = "FILTER";
 
     public EventDatabaseHelper(Context context) {
@@ -65,8 +65,6 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_6 + " = \'" + description + "\' WHERE " + COL_7 + " = \'" + id + "\'");
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_8 + " = \'" + filter + "\' WHERE " + COL_7 + " = \'" + id + "\'");
 
-        //db.execSQL("UPDATE "+CONTACTS_TABLE_NAME+" SET name = "+"'"+s+"' "+ "WHERE salary = "+"'"+s1+"'");
-
         return true;
     }
 
@@ -78,7 +76,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
 
     public Cursor getDateSpecificData(String date) {                //queries database and returns all information on events from a specific day, ordered by time of day
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COL_1 + " like \'" + date + "\' order by " + COL_2, null);
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COL_1 + " like \'" + date + "\'", null);
         return res;
     }
 }
