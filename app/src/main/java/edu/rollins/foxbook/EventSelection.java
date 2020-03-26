@@ -23,7 +23,8 @@ public class EventSelection extends AppCompatActivity {
         // Get access to the underlying writeable database
         SQLiteDatabase db = myDB.getWritableDatabase();
         // Query for items from the database and get a cursor back
-        Cursor eventCursor = db.rawQuery("SELECT  * FROM event_table", null);
+        //Cursor eventCursor = db.rawQuery("SELECT  * FROM event_table", null);
+        Cursor eventCursor = db.rawQuery("SELECT rowid _id, * FROM event_table", null);
 
         // Find ListView to populate
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
@@ -40,7 +41,6 @@ public class EventSelection extends AppCompatActivity {
            @Override
            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
                //figure out what ItemClicked should be (Event obj? <- there is not Event obj so no . . . String??? will this give funky address?)
-               //~god i wish i could check my code . . . .
                String item = (String) adapter.getItemAtPosition(position);
 
                Intent intent = new Intent(EventSelection.this, Event.class);

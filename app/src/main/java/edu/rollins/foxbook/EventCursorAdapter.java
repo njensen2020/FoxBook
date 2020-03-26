@@ -28,8 +28,8 @@ public class EventCursorAdapter extends CursorAdapter {
             TextView tvBody = (TextView) view.findViewById(R.id.tvBody);
             TextView tvPriority = (TextView) view.findViewById(R.id.tvPriority);
             // Extract properties from cursor
-            String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
-            int priority = cursor.getInt(cursor.getColumnIndexOrThrow("priority"));
+            String body = cursor.getString(cursor.getColumnIndexOrThrow("CLUB"));
+            int priority = cursor.getInt(cursor.getColumnIndexOrThrow("ID"));
             // Populate fields with extracted properties
             tvBody.setText(body);
             tvPriority.setText(String.valueOf(priority));
