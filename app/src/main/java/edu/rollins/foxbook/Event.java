@@ -1,6 +1,7 @@
 package edu.rollins.foxbook;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +18,12 @@ public class Event extends AppCompatActivity {
     Button createButton, editButton;
     Spinner chooseFilter;
     String filter, savedExtra;
-    int id;
+    boolean editor;
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent( Event.this, Homepage.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +39,6 @@ public class Event extends AppCompatActivity {
         createButton = (Button)findViewById(R.id.createButton);
         editButton = (Button)findViewById(R.id.editButton);
         chooseFilter = (Spinner)findViewById(R.id.chooseFilter);
-        //String[] options = new String[]{"Sports", "Arts", "STEM", "Entertainment", "Greek", "Community"};
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_event, options);
-        //adapter.setDropDownViewResource(R.layout.activity_event);
-        //chooseFilter.setAdapter(adapter);
 
         chooseFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -50,17 +52,23 @@ public class Event extends AppCompatActivity {
             }
         });
 
-        //should theoretically get the selected even info passed from EvenSelection
         if(getIntent().getStringExtra("event") != null) {
-            savedExtra = getIntent().getStringExtra("event");
-            //now to parse . . . but how????
-            //editDescription.setText(savedExtra, TextView.BufferType.EDITABLE);
-            editDescription.setText(savedExtra);
-            id = 0; //<--- figure out how to put id attribute into this variable!!!!!!!!!
-
+            savedExtra = getIntent().getStringExtra("event");   //savedExtra holds an event's ID passed via EventSelection
+            Cursor eventCursor = myDB.getIDSpecificData(savedExtra);
+            if(eventCursor.getCount() == 0) {
+                editDescription.setText("Editor failure");
+            } else {
+                eventCursor.moveToFirst(); //necessary because cursors automatically start at index -1, which does not hold data
+                editDate.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("DATE")));
+                editTitle.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("TITLE")));
+                editTime.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("TIME")));
+                editLocation.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("LOCATION")));
+                editDescription.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("DESCRIPTION")));
+            }
+            editor = true;
         } else {
             savedExtra = "";
-            id = 0;
+            editor = false;
         }
 
         AddData();                        //call to addData method to add to database on button click
@@ -76,7 +84,7 @@ public class Event extends AppCompatActivity {
                     Toast.makeText(Event.this, "Select an event type", Toast.LENGTH_LONG).show();
                 } else {
 
-                    if(id == 0) {          //inserts new data into database
+                    if(!editor) {          //inserts new data into database
                         if (editDescription.getText().toString() != null) {          //conditional checks to see if description was added during event creation - adds empty string if not
                             isInserted = myDB.insertData(editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), editDescription.getText().toString(), filter);
                         } else {
@@ -84,9 +92,9 @@ public class Event extends AppCompatActivity {
                         }
                     } else {               //updates existing data in the database (DOES NOT WORK YET QUOD ID)
                         if (editDescription.getText().toString() != null) {          //conditional checks to see if description was added during event creation - adds empty string if not
-                            isInserted = myDB.updateData(id, editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), editDescription.getText().toString(), filter);
+                            isInserted = myDB.updateData(savedExtra, editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), editDescription.getText().toString(), filter);
                         } else {
-                            isInserted = myDB.updateData(id, editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), "", filter);
+                            isInserted = myDB.updateData(savedExtra, editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), "", filter);
                         }
                     }
 

@@ -51,12 +51,8 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateData(int id, String date, String time, String title, String location, String description, String filter) {
+    public boolean updateData(String id, String date, String time, String title, String location, String description, String filter) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //SQLiteDatabase db = this.getReadableDatabase(); <-- should it be readable????
-
-        //need to get id attribute in order to properly update!!!!!
-            //this is potentially passed /With/ the event upon selection <- just a matter of getting it in the method
 
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_1 + " = \'" + date + "\' WHERE " + COL_7 + " = \'" + id + "\'");
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_2 + " = \'" + time + "\' WHERE " + COL_7 + " = \'" + id + "\'");
@@ -71,6 +67,12 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
     public Cursor getAllData() {                                    //queries database and returns everything
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+        return res;
+    }
+
+    public Cursor getIDSpecificData(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL_7 + " like \'" + id + "\'", null);
         return res;
     }
 
