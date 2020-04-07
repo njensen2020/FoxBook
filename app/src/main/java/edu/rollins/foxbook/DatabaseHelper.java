@@ -83,4 +83,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sqlString = "UPDATE Account_Info SET " + COL5 + "= '" + password + "' WHERE " + COL6 + "= '" + pin + "'";
         db.execSQL(sqlString);
     }
+
+    public boolean checkPIN(String thisPin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor pin = db.rawQuery("SELECT pin FROM " + TABLE_NAME + " WHERE pin='" + thisPin + "'", null);
+
+        if(pin.getCount() <= 0) {
+            pin.close();
+            return false;
+        }
+
+        else {
+            pin.close();
+            return true;
+        }
+    }
+
+    public void deleteAccount(String username, String password, String pin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String sqlString = "DELETE FROM Account_Info WHERE username LIKE '%" + username + "%'";
+        db.execSQL(sqlString);
+    }
 }

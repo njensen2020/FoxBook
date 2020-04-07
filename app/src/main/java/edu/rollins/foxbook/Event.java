@@ -29,6 +29,10 @@ public class Event extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+
+        // Setting title of action bar
+        getSupportActionBar().setTitle("New Event");
+
         myDB = new EventDatabaseHelper(this);                       //call to EventDatabaseHelper which links Event.java to the event database
 
         editDate = (EditText)findViewById(R.id.editDate);

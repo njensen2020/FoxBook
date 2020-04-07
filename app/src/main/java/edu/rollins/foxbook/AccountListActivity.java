@@ -38,7 +38,7 @@ public class AccountListActivity extends AppCompatActivity {
         Cursor data = databaseHelper.getData();
         ArrayList<String> dataList = new ArrayList<>();
         while (data.moveToNext()) {
-            dataList.add(data.getString(1) + " " + data.getString(2) + " (" + data.getString(3) + ", " + data.getString(4) + ")");
+            dataList.add(data.getString(1) + " " + data.getString(2) + "\n" + data.getString(3) + "\n" + data.getString(4) + "\n" + data.getString(5));
         }
 
         ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);

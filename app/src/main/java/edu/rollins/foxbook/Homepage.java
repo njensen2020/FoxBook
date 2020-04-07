@@ -49,6 +49,15 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
+        Button deleteAccountButton = (Button) findViewById(R.id.deleteAccountButton);
+        deleteAccountButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                // Taking user to the delete account page
+                startActivity(new Intent(Homepage.this, DeleteAccount.class));
+            }
+        });
+
         // Setting log out button to direct back to the main activity
         Button logOutButton = (Button) findViewById(R.id.logOutButton);
         logOutButton.setOnClickListener(new View.OnClickListener() {
