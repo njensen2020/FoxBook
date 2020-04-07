@@ -10,8 +10,10 @@
         android:id="@+id/logOutButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginTop="512dp"
+        android:layout_marginTop="550dp"
+        android:background="@android:color/holo_blue_light"
         android:text="Log Out"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,31 +23,23 @@
         android:id="@+id/calendarButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/holo_blue_light"
         android:text="Event Calendar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/loggedInTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="265dp"
-        android:layout_marginBottom="600dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addEventButton" />
 
     <Button
         android:id="@+id/viewAccountButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_blue_light"
         android:text="Account Information"
-        app:layout_constraintBottom_toTopOf="@+id/logOutButton"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAccountButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -53,7 +47,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="512dp"
+        android:layout_marginBottom="550dp"
         android:text="Welcome to FoxBook"
         android:textAlignment="center"
         android:textSize="36sp"
@@ -66,9 +60,23 @@
         android:id="@+id/addEventButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/holo_blue_light"
         android:text="Create New Event"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/deleteAccountButton"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="Delete Account"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/logOutButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
