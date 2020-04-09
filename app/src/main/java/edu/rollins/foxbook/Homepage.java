@@ -49,6 +49,20 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
+        Button createClubButton = (Button) findViewById(R.id.createClubButton);
+        createClubButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homepage.this, CreateClubActivity.class));
+            }
+        });
+
+        Button viewClubButton = (Button) findViewById(R.id.viewClubButton);
+        viewClubButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homepage.this, ClubListActivity.class));
+            }
+        });
+
         Button deleteAccountButton = (Button) findViewById(R.id.deleteAccountButton);
         deleteAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
