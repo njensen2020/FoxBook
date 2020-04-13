@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,13 +35,29 @@
     <TextView
         android:id="@+id/club_bio"
         android:layout_width="match_parent"
-        android:layout_height="264dp"
+        android:layout_height="213dp"
         android:ems="10"
         android:text="My club does stuff and this is what it does"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
-    <ListView
+    <Button
+        android:id="@+id/event_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Manage Events" />
+
+    <TextView
         android:id="@+id/club_events_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:text="No upcoming events"
+        android:textSize="24sp"/>
+
+    <Button
+        android:id="@+id/return_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout" />
+
 </LinearLayout>
+</ScrollView>
