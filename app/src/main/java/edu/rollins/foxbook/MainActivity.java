@@ -15,12 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    static EventDatabaseHelper eventHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        eventHelper = new EventDatabaseHelper(this);
+
+        //hardecoded club accounts
+        databaseHelper.addData("ACM", "Club", "RollinsACM", "computer", "10101010");
+        databaseHelper.addData("Board Game", "Club", "RollinsBoardGame", "boardgaming", "10202010");
+        databaseHelper.addData("AOII", "Club", "RollinsAOII", "omicronpi", "18972020");
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Sign In");
@@ -58,10 +66,21 @@ public class MainActivity extends AppCompatActivity {
                         errText.setText(err);
                     }
                     else {
-                        startActivity(new Intent(MainActivity.this, Homepage.class));
+                        boolean clubUser = databaseHelper.isClub(username, password);
+                        if(clubUser) {
+                            Intent intent = new Intent(MainActivity.this, Club.class);
+                            intent.putExtra("club", username);
+                            startActivity(intent);
+                        } else {
+                            startActivity(new Intent(MainActivity.this, Homepage.class));
+                        }
                     }
                 }
             }
         });
+    }
+
+    public static EventDatabaseHelper getDB() {
+        return eventHelper;
     }
 }

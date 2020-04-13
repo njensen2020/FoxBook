@@ -25,12 +25,12 @@ public class Homepage extends AppCompatActivity {
         // Setting title of action bar
         getSupportActionBar().setTitle("Home");
 
-        Button addEventButton = (Button) findViewById(R.id.addEventButton);
-        addEventButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(Homepage.this, Event.class));
-            }
-        });
+        //Button addEventButton = (Button) findViewById(R.id.addEventButton);
+        //addEventButton.setOnClickListener(new View.OnClickListener() {
+            //public void onClick(View v) {
+          //      startActivity(new Intent(Homepage.this, Event.class));
+        //    }
+        //});
 
         Button calendarButton = (Button) findViewById(R.id.calendarButton);
         calendarButton.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +49,7 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
+        //C: am considering moving this to splashpage
         Button createClubButton = (Button) findViewById(R.id.createClubButton);
         createClubButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,6 +57,7 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
+        //right now this button crashes app because ClubListActivity is not implemented yet
         Button viewClubButton = (Button) findViewById(R.id.viewClubButton);
         viewClubButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

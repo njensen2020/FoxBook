@@ -21,6 +21,8 @@ public class CreateClubActivity extends AppCompatActivity {
         // CAITLIN: I saw you were on your way to implementing image support and uploading, so I left a blank space above the name for the user to select that.
         // I'm leaving it for you to implement, since you were on that track for the Clubs page itself.
         // - Neil
+        // Think I'm going to merge this with registration? Like, turn this into how to create a club for login purposes as opposed to the hard-coded clubs or drop-down club list.
+        // - Caitlin
 
         Button createClubButton = (Button) findViewById(R.id.createClubButton);
         createClubButton.setOnClickListener(new View.OnClickListener() {

@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int i, int j) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
@@ -74,6 +74,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else {
             name.close();
             return true;
+        }
+    }
+
+    public boolean isClub(String thisUsername, String thisPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor name = db.rawQuery("SELECT lastname FROM " + TABLE_NAME + " WHERE username='" + thisUsername + "' AND password='" + thisPassword + "'", null);
+
+        if(name.getCount() > 0) {
+            name.moveToFirst();
+            String ln = name.getString(0);
+            if(ln.equals("Club")) {
+                name.close();
+                return true;
+            }
+            name.close();
+            return false;
+        } else {
+            name.close();
+            return false;
         }
     }
 

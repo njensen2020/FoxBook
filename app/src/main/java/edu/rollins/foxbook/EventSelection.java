@@ -12,18 +12,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EventSelection extends AppCompatActivity {
     static EventDatabaseHelper myDB;
+    String clubName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventselect);
-        myDB = Event.getDB();
+        myDB = MainActivity.getDB();
 
         // Get access to the underlying writeable database
         SQLiteDatabase db = myDB.getWritableDatabase();
-        // Query for items from the database and get a cursor back
-        Cursor eventCursor = db.rawQuery("SELECT rowid _id, * FROM event_table", null);
+        Cursor eventCursor;
+
+        if(getIntent().getStringExtra("club") != null) {
+            clubName = getIntent().getStringExtra("club");
+            //Query database for club specific items, get a cursor back
+            eventCursor = db.rawQuery("SELECT rowid _id, * FROM event_table WHERE club LIKE \'" + clubName + "\'", null);
+        } else {
+            // Query for items from the database and get a cursor back
+            eventCursor = db.rawQuery("SELECT rowid _id, * FROM event_table", null);
+        }
 
         // Find ListView to populate
         ListView lvItems = (ListView) findViewById(R.id.lvItems);

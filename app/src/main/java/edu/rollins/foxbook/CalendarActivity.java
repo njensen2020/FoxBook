@@ -23,13 +23,13 @@ public class CalendarActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        // Setting title of action bar
+        //Setting title of action bar
         getSupportActionBar().setTitle("Calendar");
 
         nCalendarView = (CalendarView) findViewById(R.id.calendarView);
         myDate = (TextView)findViewById(R.id.myDate);
         myEvents = (TextView)findViewById(R.id.myEvents);
-        myDB = Event.getDB();
+        myDB = MainActivity.getDB();
         if(myDB == null) {
             flag = false;
         } else {
@@ -49,6 +49,7 @@ public class CalendarActivity extends AppCompatActivity{
                     } else {
                         StringBuffer buff = new StringBuffer();                                     //start of process of taking returned database information and turning it into a readable string for printing
                         while (res.moveToNext()) {
+                            buff.append(res.getString(2) + "\n");
                             buff.append("Date: " + res.getString(0) + "\n");
                             buff.append("Time: " + res.getString(1) + "\n");
                             buff.append("Title: " + res.getString(3) + "\n");
