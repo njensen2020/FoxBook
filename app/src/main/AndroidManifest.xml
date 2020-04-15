@@ -15,7 +15,8 @@
         <activity android:name=".CalendarActivity" />
         <activity android:name=".AccountListActivity" />
         <activity android:name=".Event" />
-        <activity android:name=".Club" />
+        <activity android:name=".Club"></activity>
+        <activity android:name=".CreateClubActivity" />
         <activity android:name=".EventSelection" />
         <activity android:name=".ForgotPassword" />
         <activity android:name=".SplashActivity">
