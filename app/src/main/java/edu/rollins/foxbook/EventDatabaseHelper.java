@@ -38,7 +38,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1, date);
         contentValues.put(COL_2, time);
-        contentValues.put(COL_3, club);                               //club is empty for now, in future editions club name will be gained based on who is creating event
+        contentValues.put(COL_3, club);
         contentValues.put(COL_4, title);
         contentValues.put(COL_5, location);
         contentValues.put(COL_6, description);

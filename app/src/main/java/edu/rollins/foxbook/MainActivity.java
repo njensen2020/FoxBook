@@ -10,12 +10,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-// Hello! This is a GitHub commit test!
-
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
     static EventDatabaseHelper eventHelper;
+    static ClubDatabaseHelper clubHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         eventHelper = new EventDatabaseHelper(this);
-
-        //hardecoded club accounts
-        databaseHelper.addData("ACM", "Club", "RollinsACM", "computer", "10101010");
-        databaseHelper.addData("Board Game", "Club", "RollinsBoardGame", "boardgaming", "10202010");
-        databaseHelper.addData("AOII", "Club", "RollinsAOII", "omicronpi", "18972020");
+        clubHelper = new ClubDatabaseHelper(this);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Sign In");
@@ -82,5 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static EventDatabaseHelper getDB() {
         return eventHelper;
+    }
+
+    public static ClubDatabaseHelper getCDB() {
+        return clubHelper;
     }
 }

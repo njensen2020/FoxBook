@@ -21,7 +21,7 @@ public class EventSelection extends AppCompatActivity {
         setContentView(R.layout.activity_eventselect);
         myDB = MainActivity.getDB();
 
-        // Get access to the underlying writeable database
+        // Get access to the underlying writable database
         SQLiteDatabase db = myDB.getWritableDatabase();
         Cursor eventCursor;
 

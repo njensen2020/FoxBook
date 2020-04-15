@@ -36,6 +36,14 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
+        // Setting club creation button to link to club creation page
+        Button createClubButton = (Button) findViewById(R.id.createClubButton);
+        createClubButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(SplashActivity.this, CreateClubActivity.class));
+            }
+        });
+
         // Setting login button to link to login page (MainActivity)
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

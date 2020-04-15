@@ -20,13 +20,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL4 = "Username";
     private static final String COL5 = "Password";
     private static final String COL6 = "PIN";
+    private static final String COL7 = "Type";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FirstName TEXT, LastName TEXT, Username TEXT, Password TEXT, PIN TEXT) ";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FirstName TEXT, LastName TEXT, Username TEXT, Password TEXT, PIN TEXT, Type TEXT) ";
         db.execSQL(createTable);
     }
 
@@ -35,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String first, String last, String username, String password, String pin) {
+    public boolean addData(String first, String last, String username, String password, String pin, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, first);
@@ -43,6 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL4, username);
         contentValues.put(COL5, password);
         contentValues.put(COL6, pin);
+        contentValues.put(COL7, type);
 
         Log.d(TAG, "addData: Adding " + first + ", " + last + ", " + username + ", " + password + ", " + pin + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
@@ -80,12 +82,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean isClub(String thisUsername, String thisPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor name = db.rawQuery("SELECT lastname FROM " + TABLE_NAME + " WHERE username='" + thisUsername + "' AND password='" + thisPassword + "'", null);
+        Cursor name = db.rawQuery("SELECT type FROM " + TABLE_NAME + " WHERE username='" + thisUsername + "' AND password='" + thisPassword + "'", null);
 
         if(name.getCount() > 0) {
             name.moveToFirst();
-            String ln = name.getString(0);
-            if(ln.equals("Club")) {
+            String type = name.getString(0);
+            if(type.equals("Club")) {
                 name.close();
                 return true;
             }

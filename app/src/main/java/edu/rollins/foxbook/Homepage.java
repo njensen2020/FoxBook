@@ -49,14 +49,6 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
-        //C: am considering moving this to splashpage
-        Button createClubButton = (Button) findViewById(R.id.createClubButton);
-        createClubButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(Homepage.this, CreateClubActivity.class));
-            }
-        });
-
         //right now this button crashes app because ClubListActivity is not implemented yet
         Button viewClubButton = (Button) findViewById(R.id.viewClubButton);
         viewClubButton.setOnClickListener(new View.OnClickListener() {

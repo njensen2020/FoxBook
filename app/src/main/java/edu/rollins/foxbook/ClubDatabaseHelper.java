@@ -2,18 +2,17 @@ package edu.rollins.foxbook;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class ClubDatabaseHelper extends SQLiteOpenHelper {
     //creates and accesses database of clubs
-    //QUESTION! if this the club primary key is linked to event does that mean that they HAVE to be separate tables, but the same database?????
     public static final String DATABASE_NAME = "Club.db";   //does this need to match Event.db in order for them to work together????
     public static final String TABLE_NAME = "club_table";
     public static final String COL_1 = "NAME";              //primary key
     public static final String COL_2 = "EMAIL";
     public static final String COL_3 = "BIO";
-    //public static final String COL_4 = "EVENTS";          //no need for this 'cause events will be printed via useage of club attribute in the event DB!!!
     public static final String COL_4 = "IMAGE";             //holds url for club image??? is that even possible???
 
     public ClubDatabaseHelper(Context context) {
@@ -37,7 +36,7 @@ public class ClubDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_1, name);
         contentValues.put(COL_2, email);
         contentValues.put(COL_3, bio);
-        contentValues.put(COL_4, image);
+        //contentValues.put(COL_4, image);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1) {                                          //returns true or false to tell if insertion was successful or not
             return false;
@@ -45,7 +44,6 @@ public class ClubDatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
-
 
     //needs this update method because clubs should be able to edit their pages in the case of adding a new contact email, updating bio, changing image etc.
     public boolean updateData(String name, String email, String bio, String image) {
@@ -57,5 +55,11 @@ public class ClubDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_4 + " = \'" + image + "\' WHERE " + COL_1 + " = \'" + name + "\'");
 
         return true;
+    }
+
+    public Cursor getClubData(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL_1 + " like \'" + name + "\'", null);
+        return res;
     }
 }

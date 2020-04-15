@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void addData(String first, String last, String username, String password, String pin) {
-        boolean insertData = databaseHelper.addData(first, last, username, password, pin);
+        boolean insertData = databaseHelper.addData(first, last, username, password, pin, "Student");
 
         if (insertData) {
             toastMessage("New user registered!");

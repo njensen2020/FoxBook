@@ -161,7 +161,6 @@ public class Event extends AppCompatActivity {
                 Intent intent = new Intent(Event.this, EventSelection.class);
                 intent.putExtra("club", clubName);
                 startActivity(intent);
-                //startActivity(new Intent( Event.this, EventSelection.class));
             }
         });
     }
