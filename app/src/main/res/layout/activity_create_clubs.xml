@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".createClubs">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/aboutTextView"
@@ -24,9 +23,10 @@
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Club Name (doubles as Username)"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTextView"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -41,19 +41,41 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/email"
         android:layout_width="256dp"
         android:layout_height="48dp"
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:layout_marginTop="23dp"
+        android:hint="Password (at least 8 characters)"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/bioEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/pin_number"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="PIN number (6-digits)"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/createClubButton"
@@ -65,5 +87,6 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bioEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/pin_number"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

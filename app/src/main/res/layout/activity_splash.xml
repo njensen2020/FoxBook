@@ -24,7 +24,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="256dp"
         android:background="@android:color/holo_blue_light"
-        android:text="REGISTER"
+        android:text="REGISTER as Student"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,6 +59,18 @@
         android:layout_height="wrap_content"
         android:text="Don't have an account?"
         app:layout_constraintBottom_toTopOf="@+id/forgotPasswordButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/createClubButton"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/holo_blue_light"
+        android:text="Create A Club"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
