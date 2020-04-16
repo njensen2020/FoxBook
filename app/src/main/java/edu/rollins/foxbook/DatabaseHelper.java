@@ -22,12 +22,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL6 = "PIN";
     private static final String COL7 = "Type";
 
+    private static final String COL8 = "Club";
+
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FirstName TEXT, LastName TEXT, Username TEXT, Password TEXT, PIN TEXT, Type TEXT) ";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FirstName TEXT, LastName TEXT, Username TEXT, Password TEXT, PIN TEXT, Type TEXT, Club TEXT) ";
         db.execSQL(createTable);
     }
 
@@ -45,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL5, password);
         contentValues.put(COL6, pin);
         contentValues.put(COL7, type);
+        contentValues.put(COL8, "None");
 
         Log.d(TAG, "addData: Adding " + first + ", " + last + ", " + username + ", " + password + ", " + pin + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
@@ -127,5 +130,81 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String sqlString = "DELETE FROM Account_Info WHERE username LIKE '%" + username + "%'";
         db.execSQL(sqlString);
+    }
+
+    public void followClub(String thisUsername, String thisPassword, String club) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor followedClubs = db.rawQuery("SELECT club FROM " + TABLE_NAME + " WHERE username='" + thisUsername + "' AND password='" + thisPassword + "'", null);
+
+        if(followedClubs.getCount() > 0) {
+            //add new club to existing list of followed clubs
+            followedClubs.moveToFirst();
+            if(followedClubs.getString(0).equals("None")) {
+                db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL8 + " = \'" + club + "\' WHERE " + COL4 + " = \'" + thisUsername + "\' AND " + COL5 + " = \'" + thisPassword + "\'");
+            } else {
+                StringBuffer sb = new StringBuffer();
+                sb.append(followedClubs.getString(0));
+                sb.append("_");
+                sb.append(club);
+
+                //update database
+                db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL8 + " = \'" + sb.toString() + "\' WHERE " + COL4 + " = \'" + thisUsername + "\' AND " + COL5 + " = \'" + thisPassword + "\'");
+            }
+        } else {
+            //student currently doesn't follow any clubs, update database, replacing default None with the given club
+            db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL8 + " = \'" + club + "\' WHERE " + COL4 + " = \'" + thisUsername + "\' AND " + COL5 + " = \'" + thisPassword + "\'");
+
+        }
+    }
+    public void unfollowClub(String thisUsername, String thisPassword, String club) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor original = getClubsFollowed(thisUsername, thisPassword);
+
+        if(original.getCount() > 0) {
+            //iterate thru followed clubs, checking for deleted one
+            original.moveToFirst();
+            StringBuffer sb = new StringBuffer();
+            String[] followed = original.getString(0).split("_");
+            for(String a : followed) {
+                if(!a.equals(club) && !(a.isEmpty())) {
+                    sb.append(a);
+                    sb.append("_");
+                }
+            }
+
+            //if the string buffer ends up without club names and only underscores, make it empty before updating
+            if(sb.toString().equals("_")) {
+                sb.delete(0, sb.length());
+                sb.append("");
+            }
+
+            //update database
+            db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL8 + " = \'" + sb.toString() + "\' WHERE " + COL4 + " = \'" + thisUsername + "\' AND " + COL5 + " = \'" + thisPassword + "\'");
+        }
+    }
+
+    public boolean isFollowing(String thisUsername, String thisPassword, String club) {
+        Cursor original = getClubsFollowed(thisUsername, thisPassword);
+
+        if(original.getCount() > 0) {
+            //iterate thru followed clubs, checking for one given
+            original.moveToFirst();
+            String[] followed = original.getString(0).split("_");
+            boolean flag = false;
+            for (String a : followed) {
+                if(a.equals(club)) {
+                    flag = true;
+                }
+            }
+            return flag;
+        }
+        return false;
+    }
+
+    public Cursor getClubsFollowed(String thisUsername, String thisPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT " + COL8 + " FROM " + TABLE_NAME + " WHERE " + COL4 + " LIKE \'" + thisUsername + "\' AND " + COL5 + " LIKE \'" + thisPassword + "\'", null);
+        return data;
     }
 }

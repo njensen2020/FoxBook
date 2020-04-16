@@ -39,7 +39,7 @@ public class Event extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        myDB = MainActivity.getDB();           //call to EventDatabaseHelper which links Event.java to the event database
+        myDB = SplashActivity.getDB();           //call to EventDatabaseHelper which links Event.java to the event database
 
         editDate = (EditText)findViewById(R.id.editDate);
         editTitle = (EditText)findViewById(R.id.editTitle);

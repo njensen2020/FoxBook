@@ -13,17 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
-    static EventDatabaseHelper eventHelper;
-    static ClubDatabaseHelper clubHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        eventHelper = new EventDatabaseHelper(this);
-        clubHelper = new ClubDatabaseHelper(this);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Sign In");
@@ -67,19 +62,15 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("club", username);
                             startActivity(intent);
                         } else {
-                            startActivity(new Intent(MainActivity.this, Homepage.class));
+                            Intent intent = new Intent(MainActivity.this, Homepage.class);
+                            String user = username + " " + password;
+                            intent.putExtra("user", user);
+                            startActivity(intent);
+                            //startActivity(new Intent(MainActivity.this, Homepage.class));
                         }
                     }
                 }
             }
         });
-    }
-
-    public static EventDatabaseHelper getDB() {
-        return eventHelper;
-    }
-
-    public static ClubDatabaseHelper getCDB() {
-        return clubHelper;
     }
 }

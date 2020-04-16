@@ -29,7 +29,7 @@ public class CalendarActivity extends AppCompatActivity{
         nCalendarView = (CalendarView) findViewById(R.id.calendarView);
         myDate = (TextView)findViewById(R.id.myDate);
         myEvents = (TextView)findViewById(R.id.myEvents);
-        myDB = MainActivity.getDB();
+        myDB = SplashActivity.getDB();
         if(myDB == null) {
             flag = false;
         } else {

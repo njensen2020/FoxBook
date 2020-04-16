@@ -22,11 +22,21 @@ public class ClubListActivity extends AppCompatActivity {
     private ListView listView;
 
     @Override
+    public void onBackPressed() {
+        if (getIntent().getStringExtra("user") != null) {
+            String u = getIntent().getStringExtra("user");
+            Intent intent = new Intent(ClubListActivity.this, Homepage.class);
+            intent.putExtra("user", u);
+            startActivity(intent);
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accountlist);
         listView = (ListView) findViewById(R.id.listView);
-        clubDatabaseHelper = MainActivity.getCDB();
+        clubDatabaseHelper = SplashActivity.getCDB();
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Select A Club");
@@ -56,6 +66,10 @@ public class ClubListActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ClubListActivity.this, Club.class);
                 intent.putExtra("studentView", clubName);
+                if (getIntent().getStringExtra("user") != null) {
+                    String u = getIntent().getStringExtra("user");
+                    intent.putExtra("user", u);
+                }
                 startActivity(intent);
             }
         });

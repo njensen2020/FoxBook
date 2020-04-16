@@ -34,7 +34,7 @@ public class CreateClubActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         pin = (EditText) findViewById(R.id.pin_number);
 
-        clubHelper = MainActivity.getCDB();
+        clubHelper = SplashActivity.getCDB();
 
 
         //public boolean insertData(String name, String email, String bio, String image)

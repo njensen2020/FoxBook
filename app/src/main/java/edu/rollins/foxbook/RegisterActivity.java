@@ -43,7 +43,11 @@ public class RegisterActivity extends AppCompatActivity {
                 if (newPassword.length() >= 7) {
                     if (newPIN.length() == 6) {
                         addData(newFirst, newLast, newUsername, newPassword, newPIN);
-                        startActivity(new Intent(RegisterActivity.this, Homepage.class));
+                        Intent intent = new Intent(RegisterActivity.this, Homepage.class);
+                        String user = newUsername + " " + newPassword;
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                        //startActivity(new Intent(RegisterActivity.this, Homepage.class));
                     }
                     else{
                         String pinError = "ERROR: Incorrect PIN Length";

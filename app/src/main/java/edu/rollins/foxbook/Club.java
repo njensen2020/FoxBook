@@ -17,10 +17,12 @@ public class Club extends AppCompatActivity {
     //class which displays a club's information into the club bio page template
     EventDatabaseHelper myDB;
     ClubDatabaseHelper myCDB;
+    DatabaseHelper databaseHelper;
     TextView name, eventsList;
     EditText contactEmail, bio;
     ImageView image;
     boolean clubView;   //boolean which determines if user viewing the page is a student or the club itself
+    boolean following;  //boolean which shows whether the student user follows the club
     Button editPage, eventButton, logoutButton;
 
     String savedExtra;
@@ -30,7 +32,12 @@ public class Club extends AppCompatActivity {
         if(clubView) {
             int a = 0;
         } else {
-            startActivity(new Intent( Club.this, Homepage.class));
+            if (getIntent().getStringExtra("user") != null) {
+                String u = getIntent().getStringExtra("user");
+                Intent intent = new Intent(Club.this, Homepage.class);
+                intent.putExtra("user", u);
+                startActivity(intent);
+            }
         }
     }
 
@@ -38,13 +45,14 @@ public class Club extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club);
+        databaseHelper = new DatabaseHelper(this);
 
         //ensures the keyboard only appears in editting mode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         //clubDB call
-        myDB = MainActivity.getDB();
-        myCDB = MainActivity.getCDB();
+        myDB = SplashActivity.getDB();
+        myCDB = SplashActivity.getCDB();
 
         name = (TextView) findViewById(R.id.club_name);
         contactEmail = (EditText) findViewById(R.id.contact_email);
@@ -66,7 +74,10 @@ public class Club extends AppCompatActivity {
         } else {
             savedExtra = getIntent().getStringExtra("studentView");
             name.setText(savedExtra);
-            eventButton.setText("Subscribe to Events");
+            String u = getIntent().getStringExtra("user");
+            String[] userInfo = u.split(" ");
+            following = databaseHelper.isFollowing(userInfo[0], userInfo[1], savedExtra);
+            eventButton.setText((following ? "Unfollow" : "Subscribe to Events"));
             logoutButton.setVisibility(View.GONE); //prevents student users from selecting the logout button
             editPage.setVisibility(View.GONE);  //prevents student user from selecting edit_page button
             clubView = false;
@@ -119,8 +130,6 @@ public class Club extends AppCompatActivity {
                 }
             });
 
-            //does not go here but dear future Caitlin for adding clubs to a student's follow list use a Cursor? As an attribute of the account DB?
-
             logoutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -142,8 +151,22 @@ public class Club extends AppCompatActivity {
             eventButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //code for following to come . . .
-                    Toast.makeText(Club.this, "You now follow " + name.getText().toString(), Toast.LENGTH_LONG).show();
+                    if (getIntent().getStringExtra("user") != null) {
+                        String u = getIntent().getStringExtra("user");
+                        String[] userInfo = u.split(" ");
+                        String user = userInfo[0];
+                        String password = userInfo[1];
+
+                        if(following) {
+                            databaseHelper.unfollowClub(user, password, name.getText().toString());
+                            Toast.makeText(Club.this, "You have unfollowed " + name.getText().toString(), Toast.LENGTH_LONG).show();
+                            eventButton.setText("Subscribe to Events");
+                        } else {
+                            databaseHelper.followClub(user, password, name.getText().toString());
+                            Toast.makeText(Club.this, "You now follow " + name.getText().toString(), Toast.LENGTH_LONG).show();
+                            eventButton.setText("Unfollow");
+                        }
+                    }
                 }
             });
         }

@@ -9,6 +9,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
+    static EventDatabaseHelper eventHelper;
+    static ClubDatabaseHelper clubHelper;
 
     // Disabling the back button
     @Override
@@ -20,6 +22,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        eventHelper = new EventDatabaseHelper(this);
+        clubHelper = new ClubDatabaseHelper(this);
+
         Button registerButton = (Button) findViewById(R.id.forgotPasswordButton);
         Button loginButton = (Button) findViewById(R.id.loginButton);
 
@@ -51,5 +57,13 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
             }
         });
+    }
+
+    public static EventDatabaseHelper getDB() {
+        return eventHelper;
+    }
+
+    public static ClubDatabaseHelper getCDB() {
+        return clubHelper;
     }
 }

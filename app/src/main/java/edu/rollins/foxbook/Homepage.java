@@ -25,13 +25,6 @@ public class Homepage extends AppCompatActivity {
         // Setting title of action bar
         getSupportActionBar().setTitle("Home");
 
-        //Button addEventButton = (Button) findViewById(R.id.addEventButton);
-        //addEventButton.setOnClickListener(new View.OnClickListener() {
-            //public void onClick(View v) {
-          //      startActivity(new Intent(Homepage.this, Event.class));
-        //    }
-        //});
-
         Button calendarButton = (Button) findViewById(R.id.calendarButton);
         calendarButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -43,9 +36,17 @@ public class Homepage extends AppCompatActivity {
         Button viewAccountButton = (Button) findViewById(R.id.viewAccountButton);
         viewAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (getIntent().getStringExtra("user") != null) {
+                    String u = getIntent().getStringExtra("user");
+                    String[] userInfo = u.split(" ");
+                    String user = userInfo[0] + " " + userInfo[1];
 
+                    Intent intent = new Intent(Homepage.this, AccountListActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                }
                 // Taking user to new activity
-                startActivity(new Intent(Homepage.this, AccountListActivity.class));
+                //startActivity(new Intent(Homepage.this, AccountListActivity.class));
             }
         });
 
@@ -53,7 +54,16 @@ public class Homepage extends AppCompatActivity {
         Button viewClubButton = (Button) findViewById(R.id.viewClubButton);
         viewClubButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(Homepage.this, ClubListActivity.class));
+                if (getIntent().getStringExtra("user") != null) {
+                    String u = getIntent().getStringExtra("user");
+                    String[] userInfo = u.split(" ");
+                    String user = userInfo[0] + " " + userInfo[1];
+
+                    Intent intent = new Intent(Homepage.this, ClubListActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                }
+                //startActivity(new Intent(Homepage.this, ClubListActivity.class));
             }
         });
 

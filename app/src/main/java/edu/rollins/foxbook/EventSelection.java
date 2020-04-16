@@ -19,7 +19,7 @@ public class EventSelection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventselect);
-        myDB = MainActivity.getDB();
+        myDB = SplashActivity.getDB();
 
         // Get access to the underlying writable database
         SQLiteDatabase db = myDB.getWritableDatabase();
