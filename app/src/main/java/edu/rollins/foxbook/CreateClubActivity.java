@@ -46,7 +46,7 @@ public class CreateClubActivity extends AppCompatActivity {
                     if (pin.getText().toString().length() == 6) {
                         //add Data
                         boolean insertData = databaseHelper.addData("x", "x", name.getText().toString(), password.getText().toString(), pin.getText().toString(), "Club");
-                        boolean insertClub = clubHelper.insertData(name.getText().toString(), email.getText().toString(), bio.getText().toString(), "");
+                        boolean insertClub = clubHelper.insertData(name.getText().toString(), email.getText().toString(), bio.getText().toString(), "x");
 
                         if(insertData && insertClub) {
                             Toast.makeText(CreateClubActivity.this, "New club registered", Toast.LENGTH_LONG).show();

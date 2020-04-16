@@ -21,7 +21,7 @@ public class Club extends AppCompatActivity {
     EditText contactEmail, bio;
     ImageView image;
     boolean clubView;   //boolean which determines if user viewing the page is a student or the club itself
-    Button editPage, eventButton, logout_scrollupButton;
+    Button editPage, eventButton, logoutButton;
 
     String savedExtra;
 
@@ -55,7 +55,7 @@ public class Club extends AppCompatActivity {
         eventsList = (TextView) findViewById(R.id.club_events_list);
         editPage = (Button) findViewById(R.id.edit_page);
         eventButton = (Button) findViewById(R.id.event_button);
-        logout_scrollupButton = (Button) findViewById(R.id.return_btn);
+        logoutButton = (Button) findViewById(R.id.return_btn);
 
         //this conditional determines whether the page was reached via a club logging in or not
         if (getIntent().getStringExtra("club") != null) {
@@ -64,8 +64,10 @@ public class Club extends AppCompatActivity {
             editPage.setVisibility(View.VISIBLE);   //allows club user to set and select edit_page button
             clubView = true;
         } else {
+            savedExtra = getIntent().getStringExtra("studentView");
+            name.setText(savedExtra);
             eventButton.setText("Subscribe to Events");
-            logout_scrollupButton.setText("Return to Top");
+            logoutButton.setVisibility(View.GONE); //prevents student users from selecting the logout button
             editPage.setVisibility(View.GONE);  //prevents student user from selecting edit_page button
             clubView = false;
         }
@@ -102,7 +104,7 @@ public class Club extends AppCompatActivity {
                     //edit club page
                     contactEmail.setEnabled(true);
                     bio.setEnabled(true);
-                    logout_scrollupButton.setText("Save");
+                    logoutButton.setText("Save");
                     eventButton.setVisibility(View.GONE);
                 }
             });
@@ -119,14 +121,17 @@ public class Club extends AppCompatActivity {
 
             //does not go here but dear future Caitlin for adding clubs to a student's follow list use a Cursor? As an attribute of the account DB?
 
-            logout_scrollupButton.setOnClickListener(new View.OnClickListener() {
+            logoutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(logout_scrollupButton.getText().equals("Save")) {
+                    if(logoutButton.getText().equals("Save")) {
                         //updates club db by gettingText from email and bio
+                        myCDB.updateData(name.getText().toString(), contactEmail.getText().toString(), bio.getText().toString(), "");
+
+                        //resets button labels and text field restrictions for viewing mode
                         contactEmail.setEnabled(false);
                         bio.setEnabled(false);
-                        logout_scrollupButton.setText("Logout");
+                        logoutButton.setText("Logout");
                         eventButton.setVisibility(View.VISIBLE);
                     } else {
                         startActivity(new Intent(Club.this, SplashActivity.class));
@@ -139,13 +144,6 @@ public class Club extends AppCompatActivity {
                 public void onClick(View v) {
                     //code for following to come . . .
                     Toast.makeText(Club.this, "You now follow " + name.getText().toString(), Toast.LENGTH_LONG).show();
-                }
-            });
-
-            logout_scrollupButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //add functionality to scroll back up to top of page
                 }
             });
         }

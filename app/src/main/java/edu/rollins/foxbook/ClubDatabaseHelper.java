@@ -45,16 +45,21 @@ public class ClubDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //needs this update method because clubs should be able to edit their pages in the case of adding a new contact email, updating bio, changing image etc.
+    //allows clubs to edit their pages in the case of adding a new contact email, updating bio, changing image etc.
     public boolean updateData(String name, String email, String bio, String image) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //SQLiteDatabase db = this.getReadableDatabase(); <-- should it be readable????
 
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_2 + " = \'" + email + "\' WHERE " + COL_1 + " = \'" + name + "\'");
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_3 + " = \'" + bio + "\' WHERE " + COL_1 + " = \'" + name + "\'");
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_4 + " = \'" + image + "\' WHERE " + COL_1 + " = \'" + name + "\'");
+        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_4 + " = \'" + image + "\' WHERE " + COL_1 + " = \'" + name + "\'");
 
         return true;
+    }
+
+    public Cursor getAllClubData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+        return res;
     }
 
     public Cursor getClubData(String name) {
