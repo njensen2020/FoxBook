@@ -9,8 +9,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class ForgotPassword extends AppCompatActivity {
 
+    private DatabaseReference mDatabase;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
@@ -20,6 +24,8 @@ public class ForgotPassword extends AppCompatActivity {
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Reset Password");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Initializing elements
         Button submitButton = (Button) findViewById(R.id.submitButton);
@@ -42,7 +48,11 @@ public class ForgotPassword extends AppCompatActivity {
 
                 // Password is long enough
                 else {
-                    databaseHelper.updatePassword(password, pin);
+                    //updates SQLite
+                    String id = databaseHelper.updatePassword(password, pin);
+                    //updates Firebase
+                    mDatabase.child("users").child(id).child("password").setValue(password);
+
                     startActivity(new Intent(ForgotPassword.this, Homepage.class));
                 }
             }

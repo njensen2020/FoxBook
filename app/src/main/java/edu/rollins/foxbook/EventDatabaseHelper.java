@@ -24,7 +24,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {                       //creates database with given table
-        db.execSQL("create table " + TABLE_NAME + " ("+ COL_1 + " TEXT, " + COL_2 + " TEXT, " + COL_3 + " TEXT, " + COL_4 + " TEXT, " + COL_5 + " TEXT, " + COL_6 + " TEXT, " + COL_7 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_8 + " TEXT)");
+        db.execSQL("create table " + TABLE_NAME + " ("+ COL_1 + " TEXT, " + COL_2 + " TEXT, " + COL_3 + " TEXT, " + COL_4 + " TEXT, " + COL_5 + " TEXT, " + COL_6 + " TEXT, " + COL_7 + " TEXT PRIMARY KEY, " + COL_8 + " TEXT)");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String date, String time, String club, String title, String location, String description, String filter) {        //inserts new event into database
+    public boolean insertData(String id, String date, String time, String club, String title, String location, String description, String filter) {        //inserts new event into database
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1, date);
@@ -42,6 +42,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         contentValues.put(COL_4, title);
         contentValues.put(COL_5, location);
         contentValues.put(COL_6, description);
+        contentValues.put(COL_7, id);
         contentValues.put(COL_8, filter);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1) {                                          //returns true or false to tell if insertion was successful or not
@@ -62,6 +63,28 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_8 + " = \'" + filter + "\' WHERE " + COL_7 + " = \'" + id + "\'");
 
         return true;
+    }
+
+    public boolean inDatabase(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL_7 + " like \'" + id + "\'", null);
+        if(res.getCount() == 0) {   //nothing in database under that id
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public String getID(String club, String title, String time, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select " + COL_7 + " from " + TABLE_NAME + " where " + COL_3 + " like \'" + club + "\' and " + COL_4 + " like \'" + title + "\' and " + COL_2 + " like \'" + time + "\' and " + COL_1 + " like \'" + date + "\'", null);
+        if(res.getCount() > 0) {
+            res.moveToFirst();
+            String id = res.getString(0);
+            return id;
+        } else {
+            return "x";
+        }
     }
 
     public Cursor getAllData() {                                    //queries database and returns everything

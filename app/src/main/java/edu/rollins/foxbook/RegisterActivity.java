@@ -11,8 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterActivity extends AppCompatActivity {
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class RegisterActivity extends AppCompatActivity {
+    private DatabaseReference mDatabase;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
@@ -28,6 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
         final TextView errText = (TextView) findViewById(R.id.errorTextView);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Create an Account");
@@ -47,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
                         String user = newUsername + " " + newPassword;
                         intent.putExtra("user", user);
                         startActivity(intent);
-                        //startActivity(new Intent(RegisterActivity.this, Homepage.class));
                     }
                     else{
                         String pinError = "ERROR: Incorrect PIN Length";
@@ -63,7 +70,21 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void addData(String first, String last, String username, String password, String pin) {
-        boolean insertData = databaseHelper.addData(first, last, username, password, pin, "Student");
+        //generate unique id from timestamp
+        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+        String id = s.format(new Date());
+
+        //adds to SQLite database
+        boolean insertData = databaseHelper.addData(id, first, last, username, password, pin, "Student");
+
+        //adds to Firebase
+        DatabaseReference nuRef = mDatabase.child("users").child(id);
+        nuRef.child("firstname").setValue(first);
+        nuRef.child("lastname").setValue(last);
+        nuRef.child("username").setValue(username);
+        nuRef.child("password").setValue(password);
+        nuRef.child("PIN").setValue(pin);
+        nuRef.child("type").setValue("Student");
 
         if (insertData) {
             toastMessage("New user registered!");

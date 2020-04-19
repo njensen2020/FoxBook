@@ -50,10 +50,20 @@ public class ClubDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_2 + " = \'" + email + "\' WHERE " + COL_1 + " = \'" + name + "\'");
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_3 + " = \'" + bio + "\' WHERE " + COL_1 + " = \'" + name + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_3 + " = \"" + bio + "\" WHERE " + COL_1 + " = \'" + name + "\'");
         //db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_4 + " = \'" + image + "\' WHERE " + COL_1 + " = \'" + name + "\'");
 
         return true;
+    }
+
+    public boolean inDatabase(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL_1 + " like \'" + id + "\'", null);
+        if(res.getCount() == 0) {   //nothing in database under that id
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public Cursor getAllClubData() {

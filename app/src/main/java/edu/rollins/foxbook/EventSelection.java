@@ -46,15 +46,15 @@ public class EventSelection extends AppCompatActivity {
 
         //on click listener for selecting events
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-           @Override
-           public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-               Cursor item = (Cursor) adapter.getItemAtPosition(position);
-               String eventID = item.getString(item.getColumnIndexOrThrow("ID"));
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+                Cursor item = (Cursor) adapter.getItemAtPosition(position);
+                String eventID = item.getString(item.getColumnIndexOrThrow("ID"));
 
-               Intent intent = new Intent(EventSelection.this, Event.class);
-               intent.putExtra("event", eventID);
-               startActivity(intent);
-           }
+                Intent intent = new Intent(EventSelection.this, Event.class);
+                intent.putExtra("event", eventID);
+                startActivity(intent);
+            }
         });
     }
 }

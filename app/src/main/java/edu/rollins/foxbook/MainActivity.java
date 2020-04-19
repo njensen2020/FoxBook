@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                             String user = username + " " + password;
                             intent.putExtra("user", user);
                             startActivity(intent);
-                            //startActivity(new Intent(MainActivity.this, Homepage.class));
                         }
                     }
                 }

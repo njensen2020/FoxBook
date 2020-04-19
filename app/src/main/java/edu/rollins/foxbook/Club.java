@@ -13,8 +13,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Club extends AppCompatActivity {
     //class which displays a club's information into the club bio page template
+    DatabaseReference mDatabase;
     EventDatabaseHelper myDB;
     ClubDatabaseHelper myCDB;
     DatabaseHelper databaseHelper;
@@ -50,9 +54,12 @@ public class Club extends AppCompatActivity {
         //ensures the keyboard only appears in editting mode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        //clubDB call
+        //SQLite database calls
         myDB = SplashActivity.getDB();
         myCDB = SplashActivity.getCDB();
+
+        //retrieve instance of Firebase DatabaseReference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         name = (TextView) findViewById(R.id.club_name);
         contactEmail = (EditText) findViewById(R.id.contact_email);
@@ -136,6 +143,9 @@ public class Club extends AppCompatActivity {
                     if(logoutButton.getText().equals("Save")) {
                         //updates club db by gettingText from email and bio
                         myCDB.updateData(name.getText().toString(), contactEmail.getText().toString(), bio.getText().toString(), "");
+                        //updates club in firebase
+                        mDatabase.child("clubs").child(name.getText().toString()).child("email").setValue(contactEmail.getText().toString());
+                        mDatabase.child("clubs").child(name.getText().toString()).child("bio").setValue(bio.getText().toString());
 
                         //resets button labels and text field restrictions for viewing mode
                         contactEmail.setEnabled(false);
@@ -159,12 +169,34 @@ public class Club extends AppCompatActivity {
 
                         if(following) {
                             databaseHelper.unfollowClub(user, password, name.getText().toString());
+
+                            //update Firebase
+                            Cursor res = databaseHelper.getClubsFollowed(user, password);
+                            String c = "";
+                            if(res.getCount() != 0) {
+                                res.moveToFirst();
+                                c = res.getString(0);
+                            }
+                            mDatabase.child("users").child(databaseHelper.getID(user, password)).child("club").setValue(c);
+
                             Toast.makeText(Club.this, "You have unfollowed " + name.getText().toString(), Toast.LENGTH_LONG).show();
                             eventButton.setText("Subscribe to Events");
+                            following = false;
                         } else {
                             databaseHelper.followClub(user, password, name.getText().toString());
+
+                            //update Firebase
+                            Cursor res = databaseHelper.getClubsFollowed(user, password);
+                            String c = "";
+                            if(res.getCount() != 0) {
+                                res.moveToFirst();
+                                c = res.getString(0);
+                            }
+                            mDatabase.child("users").child(databaseHelper.getID(user, password)).child("club").setValue(c);
+
                             Toast.makeText(Club.this, "You now follow " + name.getText().toString(), Toast.LENGTH_LONG).show();
                             eventButton.setText("Unfollow");
+                            following = true;
                         }
                     }
                 }

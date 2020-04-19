@@ -55,11 +55,9 @@ public class AccountListActivity extends AppCompatActivity {
     private void populateListView() {
         Log.d(TAG, "populateListView: Displaying data in ListView.");
 
-        //Cursor data = databaseHelper.getData();
         Cursor data = databaseHelper.getClubsFollowed(user, password);
         ArrayList<String> dataList = new ArrayList<>();
         data.moveToFirst();
-            //dataList.add(data.getString(1) + " " + data.getString(2) + " (" + data.getString(3) + ", " + data.getString(4) + ")");
         String c = data.getString(0);
         String[] clubs = c.split("_");
         for(String a : clubs) {

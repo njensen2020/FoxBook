@@ -11,7 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CreateClubActivity extends AppCompatActivity {
+    DatabaseReference mDatabase;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
     ClubDatabaseHelper clubHelper;
     EditText name, email, bio, password, pin;
@@ -25,6 +32,9 @@ public class CreateClubActivity extends AppCompatActivity {
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Create A Club");
+
+        //get Firebase reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -44,9 +54,28 @@ public class CreateClubActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(password.getText().toString().length() >= 7) {
                     if (pin.getText().toString().length() == 6) {
-                        //add Data
-                        boolean insertData = databaseHelper.addData("x", "x", name.getText().toString(), password.getText().toString(), pin.getText().toString(), "Club");
+                        //generate unique id from timestamp
+                        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+                        String id = s.format(new Date());
+
+                        //add data to SQLite
+                        boolean insertData = databaseHelper.addData(id, "x", "x", name.getText().toString(), password.getText().toString(), pin.getText().toString(), "Club");
                         boolean insertClub = clubHelper.insertData(name.getText().toString(), email.getText().toString(), bio.getText().toString(), "x");
+
+                        //add data to Firebase under users, then under clubs
+                        DatabaseReference nuRef = mDatabase.child("users").child(id);
+                        nuRef.child("firstname").setValue("x");
+                        nuRef.child("lastname").setValue("x");
+                        nuRef.child("username").setValue(name.getText().toString());
+                        nuRef.child("password").setValue(password.getText().toString());
+                        nuRef.child("PIN").setValue(pin.getText().toString());
+                        nuRef.child("type").setValue("Club");
+
+                        DatabaseReference ncRef = mDatabase.child("clubs").child(name.getText().toString());
+                        ncRef.child("name").setValue(name.getText().toString());
+                        ncRef.child("email").setValue(email.getText().toString());
+                        ncRef.child("bio").setValue(bio.getText().toString());
+
 
                         if(insertData && insertClub) {
                             Toast.makeText(CreateClubActivity.this, "New club registered", Toast.LENGTH_LONG).show();

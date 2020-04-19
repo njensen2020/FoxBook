@@ -21,7 +21,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL5 = "Password";
     private static final String COL6 = "PIN";
     private static final String COL7 = "Type";
-
     private static final String COL8 = "Club";
 
     public DatabaseHelper(Context context) {
@@ -29,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FirstName TEXT, LastName TEXT, Username TEXT, Password TEXT, PIN TEXT, Type TEXT, Club TEXT) ";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID TEXT PRIMARY KEY, FirstName TEXT, LastName TEXT, Username TEXT, Password TEXT, PIN TEXT, Type TEXT, Club TEXT) ";
         db.execSQL(createTable);
     }
 
@@ -38,9 +37,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String first, String last, String username, String password, String pin, String type) {
+    public boolean addData(String id, String first, String last, String username, String password, String pin, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COL1, id);
         contentValues.put(COL2, first);
         contentValues.put(COL3, last);
         contentValues.put(COL4, username);
@@ -57,6 +57,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         else {
             return true;
+        }
+    }
+
+    public boolean updateData(String id, String firstname, String lastname, String username, String password, String pin, String type, String club) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL2 + " = \'" + firstname + "\' WHERE " + COL1 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL3 + " = \'" + lastname + "\' WHERE " + COL1 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL4 + " = \'" + username + "\' WHERE " + COL1 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL5 + " = \'" + password + "\' WHERE " + COL1 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL6 + " = \'" + pin + "\' WHERE " + COL1 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL7 + " = \'" + type + "\' WHERE " + COL1 + " = \'" + id + "\'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL8 + " = \'" + club + "\' WHERE " + COL1 + " = \'" + id + "\'");
+
+        return true;
+    }
+
+    public boolean inDatabase(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL1 + " like \'" + id + "\'", null);
+        if(res.getCount() == 0) {   //nothing in database under that id
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public String getID(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT ID FROM " + TABLE_NAME + " WHERE username='" + username + "' AND password='" + password + "'", null);
+        if(res.getCount() > 0) {
+            res.moveToFirst();
+            String id = res.getString(0);
+            return id;
+        } else {
+            return "x";
         }
     }
 
@@ -102,11 +138,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updatePassword(String password, String pin) {
+    public String updatePassword(String password, String pin) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sqlString = "UPDATE Account_Info SET " + COL5 + "= '" + password + "' WHERE " + COL6 + "= '" + pin + "'";
         db.execSQL(sqlString);
+
+        Cursor res = db.rawQuery("SELECT ID FROM " + TABLE_NAME + " WHERE PIN='" + pin + "'", null);
+        res.moveToFirst();
+        String id = res.getString(0);
+        return id;
     }
 
     public boolean checkPIN(String thisPin) {

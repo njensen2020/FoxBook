@@ -16,9 +16,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Event extends AppCompatActivity {
+    private DatabaseReference mDatabase;
     EventDatabaseHelper myDB;
     EditText editDate, editTitle, editTime, editLocation, editDescription;
     Button createButton, editButton;
@@ -39,6 +45,8 @@ public class Event extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference(); //gets Firebase reference
         myDB = SplashActivity.getDB();           //call to EventDatabaseHelper which links Event.java to the event database
 
         editDate = (EditText)findViewById(R.id.editDate);
@@ -124,16 +132,66 @@ public class Event extends AppCompatActivity {
                 } else {
 
                     if(!editor) {          //inserts new data into database
+                        //generate unique id from timestamp
+                        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+                        String id = s.format(new Date());
+
                         if (editDescription.getText().toString() != null) {          //conditional checks to see if description was added during event creation - adds empty string if not
-                            isInserted = myDB.insertData(editDate.getText().toString(), editTime.getText().toString(), clubName, editTitle.getText().toString(), editLocation.getText().toString(), editDescription.getText().toString(), filter);
+                            //add to SQLite database
+                            isInserted = myDB.insertData(id, editDate.getText().toString(), editTime.getText().toString(), clubName, editTitle.getText().toString(), editLocation.getText().toString(), editDescription.getText().toString(), filter);
+
+                            //add data to Firebase under events
+                            DatabaseReference nuRef = mDatabase.child("events").child(id);
+                            nuRef.child("date").setValue(editDate.getText().toString());
+                            nuRef.child("time").setValue(editTime.getText().toString());
+                            nuRef.child("club").setValue(clubName);
+                            nuRef.child("title").setValue(editTitle.getText().toString());
+                            nuRef.child("location").setValue(editLocation.getText().toString());
+                            nuRef.child("description").setValue(editDescription.getText().toString());
+                            nuRef.child("filter").setValue(filter);
+
                         } else {
-                            isInserted = myDB.insertData(editDate.getText().toString(), editTime.getText().toString(), clubName, editTitle.getText().toString(), editLocation.getText().toString(), "", filter);
+                            isInserted = myDB.insertData(id, editDate.getText().toString(), editTime.getText().toString(), clubName, editTitle.getText().toString(), editLocation.getText().toString(), "", filter);
+
+                            //add data to Firebase under events
+                            DatabaseReference nuRef = mDatabase.child("events").child(id);
+                            nuRef.child("date").setValue(editDate.getText().toString());
+                            nuRef.child("time").setValue(editTime.getText().toString());
+                            nuRef.child("club").setValue(clubName);
+                            nuRef.child("title").setValue(editTitle.getText().toString());
+                            nuRef.child("location").setValue(editLocation.getText().toString());
+                            nuRef.child("filter").setValue(filter);
+
                         }
                     } else {               //updates existing data in the database
                         if (editDescription.getText().toString() != null) {          //conditional checks to see if description was added during event creation - adds empty string if not
+                            //updates SQLite database
                             isInserted = myDB.updateData(savedExtra, editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), editDescription.getText().toString(), filter);
+
+                            //updates Firebase
+                            DatabaseReference nuRef = mDatabase.child("events").child(savedExtra);
+                            nuRef.child("date").setValue(editDate.getText().toString());
+                            nuRef.child("time").setValue(editTime.getText().toString());
+                            nuRef.child("club").setValue(clubName);
+                            nuRef.child("title").setValue(editTitle.getText().toString());
+                            nuRef.child("location").setValue(editLocation.getText().toString());
+                            nuRef.child("description").setValue(editDescription.getText().toString());
+                            nuRef.child("filter").setValue(filter);
+
                         } else {
+                            //updates SQLite database
                             isInserted = myDB.updateData(savedExtra, editDate.getText().toString(), editTime.getText().toString(), editTitle.getText().toString(), editLocation.getText().toString(), "", filter);
+
+                            //updates Firebase
+                            DatabaseReference nuRef = mDatabase.child("events").child(savedExtra);
+                            nuRef.child("date").setValue(editDate.getText().toString());
+                            nuRef.child("time").setValue(editTime.getText().toString());
+                            nuRef.child("club").setValue(clubName);
+                            nuRef.child("title").setValue(editTitle.getText().toString());
+                            nuRef.child("location").setValue(editLocation.getText().toString());
+                            nuRef.child("description").setValue(" ");
+                            nuRef.child("filter").setValue(filter);
+
                         }
                     }
 

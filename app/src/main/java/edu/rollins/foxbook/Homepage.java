@@ -45,8 +45,6 @@ public class Homepage extends AppCompatActivity {
                     intent.putExtra("user", user);
                     startActivity(intent);
                 }
-                // Taking user to new activity
-                //startActivity(new Intent(Homepage.this, AccountListActivity.class));
             }
         });
 
@@ -63,7 +61,6 @@ public class Homepage extends AppCompatActivity {
                     intent.putExtra("user", user);
                     startActivity(intent);
                 }
-                //startActivity(new Intent(Homepage.this, ClubListActivity.class));
             }
         });
 
