@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "107384827856",
+    "firebase_url": "https://foxbook-edf1d.firebaseio.com",
+    "project_id": "foxbook-edf1d",
+    "storage_bucket": "foxbook-edf1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107384827856:android:0b02493bad9473f7f5d3d5",
+        "android_client_info": {
+          "package_name": "edu.rollins.foxbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107384827856-hg3qqjsr8h1lanlkm85ecrmeltg5rv5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQVAp9fCUVCj9JQt-snQ_mqwxM0-3NFWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107384827856-hg3qqjsr8h1lanlkm85ecrmeltg5rv5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
