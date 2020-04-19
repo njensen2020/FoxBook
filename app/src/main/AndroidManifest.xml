@@ -20,6 +20,7 @@
         <activity android:name=".ClubListActivity" />
         <activity android:name=".EventSelection" />
         <activity android:name=".ForgotPassword" />
+        <activity android:name=".DeleteAccount" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
