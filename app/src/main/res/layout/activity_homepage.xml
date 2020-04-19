@@ -37,7 +37,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/holo_blue_light"
-        android:text="Account Information"
+        android:text="Followed Clubs"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/deleteAccountButton"
         app:layout_constraintEnd_toEndOf="parent"
