@@ -32,6 +32,13 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
+        Button eventListButton = (Button) findViewById(R.id.eventListButton);
+        eventListButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homepage.this, EventListActivity.class));
+            }
+        });
+
         // Button to take the user to account credentials page
         Button viewAccountButton = (Button) findViewById(R.id.viewAccountButton);
         viewAccountButton.setOnClickListener(new View.OnClickListener() {

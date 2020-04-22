@@ -32,7 +32,7 @@ public class EventCursorAdapter extends CursorAdapter {
         String priority = cursor.getString(cursor.getColumnIndexOrThrow("TITLE"));
         priority = priority + " " + cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
         // Populate fields with extracted properties
-        tvBody.setText(String.valueOf(body));
+        tvBody.setText("");
         tvPriority.setText(priority);
     }
 }
