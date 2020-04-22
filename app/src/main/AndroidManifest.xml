@@ -18,6 +18,7 @@
         <activity android:name=".Club"></activity>
         <activity android:name=".CreateClubActivity" />
         <activity android:name=".ClubListActivity" />
+        <activity android:name=".EventListActivity" />
         <activity android:name=".EventSelection" />
         <activity android:name=".ForgotPassword" />
         <activity android:name=".DeleteAccount" />
