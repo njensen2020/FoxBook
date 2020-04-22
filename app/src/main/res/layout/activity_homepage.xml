@@ -32,6 +32,19 @@
         app:layout_constraintTop_toBottomOf="@+id/viewClubButton" />
 
     <Button
+        android:id="@+id/eventListButton"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_blue_light"
+        android:text="Event List"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/calendarButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/viewAccountButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
@@ -72,7 +85,7 @@
         android:id="@+id/viewClubButton"
         android:layout_width="256dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="164dp"
         android:background="@android:color/holo_blue_light"
         android:text="View Clubs"
         android:textColor="@android:color/white"
