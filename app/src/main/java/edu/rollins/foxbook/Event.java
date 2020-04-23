@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Event extends AppCompatActivity {
+	//class which allows club users to create and/or edit events
+	
     private DatabaseReference mDatabase;
     EventDatabaseHelper myDB;
     EditText editDate, editTitle, editTime, editLocation, editDescription;
@@ -35,7 +37,7 @@ public class Event extends AppCompatActivity {
     DatePickerDialog m_CalendarDialog;
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {	//back button takes user to their club page, preserving club name
         Intent intent = new Intent(Event.this, Club.class);
         intent.putExtra("club", clubName);
         startActivity(intent);
@@ -44,7 +46,7 @@ public class Event extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+        setContentView(R.layout.activity_event);	//links .java file to activity_event.xml
 
         mDatabase = FirebaseDatabase.getInstance().getReference(); //gets Firebase reference
         myDB = SplashActivity.getDB();           //call to EventDatabaseHelper which links Event.java to the event database
@@ -77,12 +79,12 @@ public class Event extends AppCompatActivity {
             clubName = getIntent().getStringExtra("club");
         }
 
-        if(getIntent().getStringExtra("event") != null) {
+        if(getIntent().getStringExtra("event") != null) {		//if statement for when in editing mode
             savedExtra = getIntent().getStringExtra("event");   //savedExtra holds an event's ID passed via EventSelection
             Cursor eventCursor = myDB.getIDSpecificData(savedExtra);
             if(eventCursor.getCount() == 0) {
                 editDescription.setText("Editor failure");
-            } else {
+            } else {	//populate text fields with the information of the selected event
                 eventCursor.moveToFirst(); //necessary because cursors automatically start at index -1, which does not hold data
                 editDate.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("DATE")));
                 editTitle.setText(eventCursor.getString(eventCursor.getColumnIndexOrThrow("TITLE")));
@@ -102,7 +104,7 @@ public class Event extends AppCompatActivity {
     }
 
     public void AddData() {
-        editTime.setOnClickListener(new View.OnClickListener() {
+        editTime.setOnClickListener(new View.OnClickListener() {	//causes clock to appear when selecting an event's time
 
             @Override
             public void onClick(View v) {
@@ -151,6 +153,7 @@ public class Event extends AppCompatActivity {
                             nuRef.child("filter").setValue(filter);
 
                         } else {
+							//add to SQLite database
                             isInserted = myDB.insertData(id, editDate.getText().toString(), editTime.getText().toString(), clubName, editTitle.getText().toString(), editLocation.getText().toString(), "", filter);
 
                             //add data to Firebase under events
@@ -195,7 +198,7 @@ public class Event extends AppCompatActivity {
                         }
                     }
 
-                    if (isInserted == true) {                                    //conditional to display popup telling whether data insertion was successful
+                    if (isInserted == true) {            //conditional to display pop-up telling whether data insertion was successful
                         Toast.makeText(Event.this, "Data Inserted", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(Event.this, "Data NOT Inserted", Toast.LENGTH_LONG).show();
@@ -204,7 +207,7 @@ public class Event extends AppCompatActivity {
             }
         });
 
-        editDate.setOnClickListener(new View.OnClickListener() {
+        editDate.setOnClickListener(new View.OnClickListener() { //causes a calendar to appear when entering date
             @Override
             public void onClick(View v) {
                 m_CalendarDialog.show();
@@ -212,7 +215,7 @@ public class Event extends AppCompatActivity {
         });
     }
 
-    public void EditData() {
+    public void EditData() {	//sends user to a page consisting of all events their club has created so they can pick which to edit
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

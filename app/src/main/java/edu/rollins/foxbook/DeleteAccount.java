@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DeleteAccount extends AppCompatActivity {
+	//class which deletes user from both the user SQLite database and from Firebase
     private DatabaseReference mDatabase;
     DatabaseHelper databaseHelper;
     EditText usernameEditText, passwordEditText;
@@ -24,13 +25,14 @@ public class DeleteAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_deleteaccount);
+        setContentView(R.layout.activity_deleteaccount);	//links .java file to activity_deleteaccount.xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         databaseHelper = new DatabaseHelper(this);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Delete Your Account");
 
+		//get Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         usernameEditText = (EditText) findViewById(R.id.usernameEditText);
@@ -46,7 +48,7 @@ public class DeleteAccount extends AppCompatActivity {
             public void onClick(View v) {
                 String id = databaseHelper.getID(usernameEditText.getText().toString(), passwordEditText.getText().toString());
 
-                //delete from SQLite
+                //delete from SQLite database
                 databaseHelper.deleteAccount(username, password, pin);
 
                 Toast.makeText(DeleteAccount.this, id, Toast.LENGTH_SHORT).show();
@@ -55,6 +57,7 @@ public class DeleteAccount extends AppCompatActivity {
                 DatabaseReference delRef = mDatabase.child("users").child(id);
                 delRef.removeValue();
 
+				//sends user back to splash page
                 startActivity(new Intent(DeleteAccount.this, SplashActivity.class));
             }
         });

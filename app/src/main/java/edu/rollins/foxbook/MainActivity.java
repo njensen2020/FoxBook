@@ -11,13 +11,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+	//class for the login page
 
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);	//links .java file to activity_main.xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Setting title of action bar
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Button resetPasswordButton = (Button) findViewById(R.id.forgotPasswordButton);
         final TextView errText = (TextView) findViewById(R.id.errorTextView);
 
+		//sends user to forgotten password page
         resetPasswordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ForgotPassword.class));
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Logging user in
                 String username = ((EditText)findViewById(R.id.usernameEditText)).getText().toString();
                 String password = ((EditText)findViewById(R.id.passwordEditText)).getText().toString();
 
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                     errText.setText(err);
                 }
 
-                // Logging user in, temporary until persistent storage is added
                 else {
                     Boolean userExists = databaseHelper.checkLogin(username, password);
 
@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else {
                         boolean clubUser = databaseHelper.isClub(username, password);
-                        if(clubUser) {
+                        if(clubUser) {	//club users are sent to their club page
                             Intent intent = new Intent(MainActivity.this, Club.class);
                             intent.putExtra("club", username);
                             startActivity(intent);
-                        } else {
+                        } else {	//student users are sent to the homepage
                             Intent intent = new Intent(MainActivity.this, Homepage.class);
                             String user = username + " " + password;
                             intent.putExtra("user", user);

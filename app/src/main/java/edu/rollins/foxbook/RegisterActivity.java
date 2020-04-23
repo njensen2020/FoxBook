@@ -18,13 +18,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RegisterActivity extends AppCompatActivity {
+	//class for registering a new student user
+	
     private DatabaseReference mDatabase;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register);	//links .java file to activity_register.xml
+		
         final Button createAccountButton = (Button) findViewById(R.id.createAccountButton);
         final EditText firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
         final EditText lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
@@ -35,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+		//gets Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Setting title of action bar
@@ -50,7 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (newPassword.length() >= 7) {
                     if (newPIN.length() == 6) {
-                        addData(newFirst, newLast, newUsername, newPassword, newPIN);
+                        addData(newFirst, newLast, newUsername, newPassword, newPIN);	//call to addData method
+						//sends student user to the homepage
                         Intent intent = new Intent(RegisterActivity.this, Homepage.class);
                         String user = newUsername + " " + newPassword;
                         intent.putExtra("user", user);
@@ -85,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
         nuRef.child("password").setValue(password);
         nuRef.child("PIN").setValue(pin);
         nuRef.child("type").setValue("Student");
+        nuRef.child("club").setValue("");
 
         if (insertData) {
             toastMessage("New user registered!");

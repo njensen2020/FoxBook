@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ForgotPassword extends AppCompatActivity {
+	//class which allows user to change their password
 
     private DatabaseReference mDatabase;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
@@ -20,11 +21,12 @@ public class ForgotPassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgotpassword);
+        setContentView(R.layout.activity_forgotpassword);	//links .java file with activity_forgotpassword.xml
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Reset Password");
 
+		//get Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Initializing elements
@@ -48,12 +50,23 @@ public class ForgotPassword extends AppCompatActivity {
 
                 // Password is long enough
                 else {
-                    //updates SQLite
-                    String id = databaseHelper.updatePassword(password, pin);
-                    //updates Firebase
-                    mDatabase.child("users").child(id).child("password").setValue(password);
+                    //updates SQLite database
+                    String info = databaseHelper.updatePassword(password, pin);
+                    String[] account = info.split("_");
 
-                    startActivity(new Intent(ForgotPassword.this, Homepage.class));
+                    //updates Firebase
+                    mDatabase.child("users").child(account[0]).child("password").setValue(password);
+
+                    if(account[1].equals("Club")) {	//sends club users to their club page
+                        Intent intent = new Intent(ForgotPassword.this, Club.class);
+                        intent.putExtra("club", account[2]);
+                        startActivity(intent);
+                    } else {	//student users are sent to the homepage
+                        Intent intent = new Intent(ForgotPassword.this, Homepage.class);
+                        String user = account[2] + " " + password;
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                    }
                 }
             }
         });

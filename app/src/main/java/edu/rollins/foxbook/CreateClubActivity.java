@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CreateClubActivity extends AppCompatActivity {
+	//class which acts as the registration page for club accounts
+	
     DatabaseReference mDatabase;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
     ClubDatabaseHelper clubHelper;
@@ -27,8 +29,8 @@ public class CreateClubActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_clubs);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.activity_create_clubs); //links .java file with activity_create_clubs.xml
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //locks the screen in portrait mode
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Create A Club");
@@ -36,6 +38,7 @@ public class CreateClubActivity extends AppCompatActivity {
         //get Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+		//keeps the keyboard from being displayed until an editing field is selected
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         name = (EditText) findViewById(R.id.nameEditText);
@@ -44,12 +47,10 @@ public class CreateClubActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         pin = (EditText) findViewById(R.id.pin_number);
 
-        clubHelper = SplashActivity.getCDB();
-
-
-        //public boolean insertData(String name, String email, String bio, String image)
+        clubHelper = SplashActivity.getCDB(); //gets club SQL database
 
         Button createClubButton = (Button) findViewById(R.id.createClubButton);
+		
         createClubButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(password.getText().toString().length() >= 7) {
@@ -58,13 +59,13 @@ public class CreateClubActivity extends AppCompatActivity {
                         SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
                         String id = s.format(new Date());
 
-                        //add data to SQLite
+                        //add data to SQLite database
                         boolean insertData = databaseHelper.addData(id, "x", "x", name.getText().toString(), password.getText().toString(), pin.getText().toString(), "Club");
                         boolean insertClub = clubHelper.insertData(name.getText().toString(), email.getText().toString(), bio.getText().toString(), "x");
 
                         //add data to Firebase under users, then under clubs
                         DatabaseReference nuRef = mDatabase.child("users").child(id);
-                        nuRef.child("firstname").setValue("x");
+                        nuRef.child("firstname").setValue("x"); //clubs do not have a firstname or lastname, so x's are used as placeholders
                         nuRef.child("lastname").setValue("x");
                         nuRef.child("username").setValue(name.getText().toString());
                         nuRef.child("password").setValue(password.getText().toString());

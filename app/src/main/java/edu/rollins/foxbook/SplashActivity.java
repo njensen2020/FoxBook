@@ -17,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SplashActivity extends AppCompatActivity {
+	//the class for the opening screen of FoxBook
+	
     static EventDatabaseHelper eventHelper;     //event SQLite database
     static ClubDatabaseHelper clubHelper;       //club SQLite database
     DatabaseHelper databaseHelper = new DatabaseHelper(this);   //account SQLite database

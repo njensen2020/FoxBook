@@ -47,6 +47,7 @@ public class EventListActivity extends AppCompatActivity {
                 String club = item.getString(item.getColumnIndexOrThrow("CLUB"));
                 String filter = item.getString(item.getColumnIndexOrThrow("FILTER"));
 
+				//causes pop-up on event selection which displays more information about the event
                 AlertDialog.Builder builder = new AlertDialog.Builder(EventListActivity.this);
                 StringBuffer buff = new StringBuffer();
                 buff.append(club + "\n");

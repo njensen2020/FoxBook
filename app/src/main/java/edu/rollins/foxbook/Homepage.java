@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Homepage extends AppCompatActivity {
+	//class for homepage view of student users
 
     // Disabling the back button
     @Override
@@ -19,12 +20,13 @@ public class Homepage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homepage);
+        setContentView(R.layout.activity_homepage);	//links .java file to activity_homepage.xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Setting title of action bar
         getSupportActionBar().setTitle("Home");
 
+		//sends user to calendar
         Button calendarButton = (Button) findViewById(R.id.calendarButton);
         calendarButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -32,6 +34,7 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
+		//displays list of all events
         Button eventListButton = (Button) findViewById(R.id.eventListButton);
         eventListButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -39,7 +42,7 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
-        // Button to take the user to account credentials page
+        //displays list of all clubs the logged in user follows
         Button viewAccountButton = (Button) findViewById(R.id.viewAccountButton);
         viewAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -55,7 +58,7 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
-        //right now this button crashes app because ClubListActivity is not implemented yet
+        //shows list of all clubs for user to view
         Button viewClubButton = (Button) findViewById(R.id.viewClubButton);
         viewClubButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -80,13 +83,12 @@ public class Homepage extends AppCompatActivity {
             }
         });
 
-        // Setting log out button to direct back to the main activity
         Button logOutButton = (Button) findViewById(R.id.logOutButton);
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // Logging user out
+                // Logging user out, returning them to the splash page
                 startActivity(new Intent(Homepage.this, SplashActivity.class));
             }
         });

@@ -8,13 +8,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+	//SQLite database for storing user accounts
 
     private static final String TAG = "DatabaseHelper";
 
     // Setting up user account table
     private static final String DB_NAME = "Accounts.db";
     private static final String TABLE_NAME = "Account_Info";
-    private static final String COL1 = "ID";
+    private static final String COL1 = "ID";	//primary key
     private static final String COL2 = "FirstName";
     private static final String COL3 = "LastName";
     private static final String COL4 = "Username";
@@ -37,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+	//add a new account to the database
     public boolean addData(String id, String first, String last, String username, String password, String pin, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -47,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL5, password);
         contentValues.put(COL6, pin);
         contentValues.put(COL7, type);
-        contentValues.put(COL8, "None");
+        contentValues.put(COL8, "None");	//accounts do not start off following any clubs
 
         Log.d(TAG, "addData: Adding " + first + ", " + last + ", " + username + ", " + password + ", " + pin + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
@@ -60,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//updates an account's information in the database
     public boolean updateData(String id, String firstname, String lastname, String username, String password, String pin, String type, String club) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -74,6 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+	//checks to see if a user with the given id exists in the database
     public boolean inDatabase(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL1 + " like \'" + id + "\'", null);
@@ -84,6 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//method to get the id of a user with the given username and password
     public String getID(String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT ID FROM " + TABLE_NAME + " WHERE username='" + username + "' AND password='" + password + "'", null);
@@ -96,6 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//returns all data in the database
     public Cursor getData() {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -103,6 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+	//checks a user's login credentials based on their username and password
     public boolean checkLogin(String thisUsername, String thisPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -118,6 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//returns whether a user is a club or not, and therefor a student
     public boolean isClub(String thisUsername, String thisPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -138,18 +146,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//updates the password of the user with the given pin number, returns id, username, and type of account
     public String updatePassword(String password, String pin) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sqlString = "UPDATE Account_Info SET " + COL5 + "= '" + password + "' WHERE " + COL6 + "= '" + pin + "'";
         db.execSQL(sqlString);
 
-        Cursor res = db.rawQuery("SELECT ID FROM " + TABLE_NAME + " WHERE PIN='" + pin + "'", null);
+        Cursor res = db.rawQuery("SELECT ID, type, username FROM " + TABLE_NAME + " WHERE PIN='" + pin + "'", null);
         res.moveToFirst();
         String id = res.getString(0);
+        id = id + "_" + res.getString(1) + "_" + res.getString(2);
         return id;
     }
 
+	//checks to see if a user in the database has the given pin number
     public boolean checkPIN(String thisPin) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -166,6 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//deletes the user with the given username, password, and pin number from the database
     public void deleteAccount(String username, String password, String pin) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -173,6 +185,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sqlString);
     }
 
+	//method which adds the given club to the user's followed clubs
     public void followClub(String thisUsername, String thisPassword, String club) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -198,12 +211,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
     }
+	
+	//removes the given club from the user's followed clubs
     public void unfollowClub(String thisUsername, String thisPassword, String club) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor original = getClubsFollowed(thisUsername, thisPassword);
 
         if(original.getCount() > 0) {
-            //iterate thru followed clubs, checking for deleted one
+            //iterate through followed clubs, checking for deleted one
             original.moveToFirst();
             StringBuffer sb = new StringBuffer();
             String[] followed = original.getString(0).split("_");
@@ -225,11 +240,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+	//returns whether or not the given user is following the given club
     public boolean isFollowing(String thisUsername, String thisPassword, String club) {
         Cursor original = getClubsFollowed(thisUsername, thisPassword);
 
         if(original.getCount() > 0) {
-            //iterate thru followed clubs, checking for one given
+            //iterate through followed clubs, checking for the one given
             original.moveToFirst();
             String[] followed = original.getString(0).split("_");
             boolean flag = false;
@@ -243,6 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+	//returns a cursor containing the clubs followed by the given user
     public Cursor getClubsFollowed(String thisUsername, String thisPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT " + COL8 + " FROM " + TABLE_NAME + " WHERE " + COL4 + " LIKE \'" + thisUsername + "\' AND " + COL5 + " LIKE \'" + thisPassword + "\'", null);

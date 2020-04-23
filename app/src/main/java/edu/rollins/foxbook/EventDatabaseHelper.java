@@ -11,11 +11,11 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "event_table";
     public static final String COL_1 = "DATE";
     public static final String COL_2 = "TIME";
-    public static final String COL_3 = "CLUB";              //this will be club name & it's the primary key of the club database table
+    public static final String COL_3 = "CLUB";         
     public static final String COL_4 = "TITLE";
     public static final String COL_5 = "LOCATION";
     public static final String COL_6 = "DESCRIPTION";
-    public static final String COL_7 = "ID";                //primary key
+    public static final String COL_7 = "ID";      //primary key
     public static final String COL_8 = "FILTER";
 
     public EventDatabaseHelper(Context context) {
@@ -23,7 +23,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {                       //creates database with given table
+    public void onCreate(SQLiteDatabase db) {              //creates database with given table
         db.execSQL("create table " + TABLE_NAME + " ("+ COL_1 + " TEXT, " + COL_2 + " TEXT, " + COL_3 + " TEXT, " + COL_4 + " TEXT, " + COL_5 + " TEXT, " + COL_6 + " TEXT, " + COL_7 + " TEXT PRIMARY KEY, " + COL_8 + " TEXT)");
     }
 
@@ -33,6 +33,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+	//inserts a new event into the SQL database
     public boolean insertData(String id, String date, String time, String club, String title, String location, String description, String filter) {        //inserts new event into database
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -52,6 +53,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         }
     }
 
+	//updates event with the given id in the database
     public boolean updateData(String id, String date, String time, String title, String location, String description, String filter) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -65,6 +67,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         return true;
     }
 
+	//returns whether their is an event in the database with the given id
     public boolean inDatabase(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL_7 + " like \'" + id + "\'", null);
@@ -75,6 +78,7 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
         }
     }
 
+	//returns the id of the event with the following attributes
     public String getID(String club, String title, String time, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select " + COL_7 + " from " + TABLE_NAME + " where " + COL_3 + " like \'" + club + "\' and " + COL_4 + " like \'" + title + "\' and " + COL_2 + " like \'" + time + "\' and " + COL_1 + " like \'" + date + "\'", null);
@@ -86,25 +90,29 @@ public class EventDatabaseHelper  extends SQLiteOpenHelper {
             return "x";
         }
     }
-
-    public Cursor getAllData() {                                    //queries database and returns everything
+	
+	//queries database and returns everything
+    public Cursor getAllData() {            
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
         return res;
     }
 
+	//returns the data of the event with the given id
     public Cursor getIDSpecificData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " +TABLE_NAME + " where " + COL_7 + " like \'" + id + "\'", null);
         return res;
     }
-
-    public Cursor getDateSpecificData(String date) {                //queries database and returns all information on events from a specific day, ordered by time of day
+	
+	//queries database and returns all information on events from a specific day
+    public Cursor getDateSpecificData(String date) {             
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COL_1 + " like \'" + date + "\'", null);
         return res;
     }
 
+	//returns all events for the given club
     public Cursor getClubSpecificData(String club) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COL_3 + " like \'" + club + "\'", null);

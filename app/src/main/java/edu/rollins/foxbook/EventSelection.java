@@ -11,6 +11,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EventSelection extends AppCompatActivity {
+	//class which displays a list of events
     static EventDatabaseHelper myDB;
     String clubName;
 
@@ -18,7 +19,7 @@ public class EventSelection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eventselect);
+        setContentView(R.layout.activity_eventselect);	//links .java file with activity_eventselect.xml
         myDB = SplashActivity.getDB();
 
         // Get access to the underlying writable database
@@ -51,6 +52,7 @@ public class EventSelection extends AppCompatActivity {
                 Cursor item = (Cursor) adapter.getItemAtPosition(position);
                 String eventID = item.getString(item.getColumnIndexOrThrow("ID"));
 
+				//returns to event page, preserving the selected event's id so the text fields can be properly populated for editing
                 Intent intent = new Intent(EventSelection.this, Event.class);
                 intent.putExtra("event", eventID);
                 startActivity(intent);
